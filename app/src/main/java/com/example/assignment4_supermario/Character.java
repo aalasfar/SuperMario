@@ -17,7 +17,7 @@ public class Character extends Object{
 
     public Character(Bitmap bmp,int w, int h, int numFrames){
         x = 100;
-        y = screenHeigh - 220;
+        y = screenHeigh - 300;
         dy = 0;
         height=h;
         width = w;
@@ -29,7 +29,7 @@ public class Character extends Object{
         }
 
         animation.setFrames(image);
-        animation.setDelay(100);
+        animation.setDelay(1000);
 
 
     }
@@ -47,21 +47,30 @@ public class Character extends Object{
         // here we can make mario move by himself
         animation.update();
 
-        if(right){
-            dx = (int)(dxa+=30);
+        if(!right){
+            dx = (int)(dxa+= 1);
+            System.out.println(dx);
         }
+        if(dx > 5){
+            dx =5;
+        }
+
+        if (x > 960){
+            dx = 0;
+        }
+        x +=dx;
+        dx = 0;
     }
     public boolean getPlaying(){
+
         return playing;
     }
     public void setPlaying(boolean b){
-        playing =b;
+
+        playing = b;
     }
     public void resetDXA(){
-        dxa = 0;
-    }
 
-    public void walk(){
-        x += 30;
+        dxa = 0;
     }
 }

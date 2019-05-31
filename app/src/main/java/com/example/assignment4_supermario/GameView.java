@@ -39,15 +39,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
         thread.setRunning(true);
         thread.start();
-
-        //We need to change this
         back = new Background(BitmapFactory.decodeResource(getResources(),R.drawable.background1));
         back.setVector(-5);
         mario = new Character(BitmapFactory.decodeResource(getResources(),R.drawable.smallsprites),191,183,7);
-        //character[0] = new Character(getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.small1), 100, 100));
-        //character[1] = new Character(getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.small2), 100, 100));
-        //character[2] = new Character(getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.small3), 100, 100));
-        //character[3] = new Character(getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.small4), 100, 100));
         count = 0;
         makeLevel();
     }
@@ -72,10 +66,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
     public void update(){
         if(mario.getPlaying()) {
-            back.update();
             mario.update();
+            //if(mario.x == WIDTH){
+                back.update();
+            //}
         }
-        //pipe1.update();
+        pipe1.update();
     }
 
     @Override
@@ -84,7 +80,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(canvas != null){
           back.draw(canvas);
           mario.draw(canvas);
-          //pipe1.draw(canvas);
+          pipe1.draw(canvas);
 
         }
     }
@@ -102,6 +98,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         if (event.getAction() == MotionEvent.ACTION_UP){
             mario.setRight(false);
+            mario.setPlaying(false);
             return true;
         }
 
