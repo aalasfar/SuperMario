@@ -10,12 +10,10 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.graphics.Matrix;
 
-import java.util.Random;
-
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
-    private Bitmap level1; //backround
+    private Bitmap back; //
     private Bitmap cloud;
     public static int gapHeight = 600;
     public static int velocity = 150;
@@ -39,7 +37,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         thread.start();
 
         //We need to change this
-        level1 = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.level1),screenWidth,screenHeight);
+        back = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.sky),screenWidth,screenHeight);
         character = new Character(getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.small1), 100, 100));
         makeLevel();
     }
@@ -71,8 +69,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas){
         super.draw(canvas);
         if(canvas != null){
-            canvas.drawBitmap(level1,0,0,null);
+            canvas.drawBitmap(back,0,0,null);
             character.draw(canvas);
+
             pipe1.draw(canvas);
         }
     }
@@ -173,9 +172,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void makeLevel(){
         Bitmap bmp;
         int y, x;
-        bmp = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.pipe),150,
-                Resources.getSystem().getDisplayMetrics().heightPixels/2);
+       bmp = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.pipe),150,
+              150);
 
+        //bmp = BitmapFactory.decodeResource(getResources(),R.drawable.pipe2);
         pipe1 = new Obsatcle(bmp, 700, 100);
     }
 
