@@ -11,17 +11,20 @@ import android.view.SurfaceView;
 import android.graphics.Matrix;
 
 
+
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     private Bitmap back; //
     private Bitmap cloud;
     public static int gapHeight = 600;
     public static int velocity = 150;
-    public Obsatcle pipe1;
-    public Character character;
+    public Obstacle pipe1;
+    public Character[] character = new Character[6];
+    public Character mario;
     private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-    public int x, y, xCloud;
+    public int x, y, count;
+
 
 
     public GameView(Context context){
@@ -38,7 +41,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         //We need to change this
         back = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.sky),screenWidth,screenHeight);
-        character = new Character(getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.small1), 100, 100));
+        character[0] = new Character(getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.small1), 100, 100));
+        character[1] = new Character(getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.small2), 100, 100));
+        character[2] = new Character(getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.small3), 100, 100));
+        character[3] = new Character(getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.small4), 100, 100));
+        count = 0;
         makeLevel();
     }
 
@@ -61,7 +68,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
     public void update(){
-        character.update();
+        mario.update();
         pipe1.update();
     }
 
@@ -70,15 +77,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         if(canvas != null){
             canvas.drawBitmap(back,0,0,null);
-            character.draw(canvas);
-
+            mario.draw(canvas);
             pipe1.draw(canvas);
         }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event){
-        moveRight();
+        moveRight(count);
+
         return super.onTouchEvent(event);
     }
 
@@ -176,7 +183,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
               150);
 
         //bmp = BitmapFactory.decodeResource(getResources(),R.drawable.pipe2);
-        pipe1 = new Obsatcle(bmp, 700, 100);
+        pipe1 = new Obstacle(bmp, 700, 100);
     }
 
     public void moveScreenLeft(){
@@ -186,11 +193,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public void moveRight(){
-            character.x += 40;
-            if(character.x >= screenWidth/2 - 200){
+    public void moveRight(int c){
+            //character.x += 40;
+        if(c % 2 != 0){ mario = character[1];}
+        else{ mario = character[2];}
+
+        mario.walk();
+            if(mario.x >= screenWidth/2 - 200){
             moveScreenLeft();
-            character.x = screenWidth/2 - 200;
+            mario.x = screenWidth/2 - 200;
+
+            count++;
         }
     }
 }

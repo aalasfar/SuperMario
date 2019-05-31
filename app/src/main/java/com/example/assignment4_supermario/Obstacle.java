@@ -4,14 +4,14 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-public class Obsatcle {
+public class Obstacle {
 
     private Bitmap image1;
     public int xX, yY;
     private int screenHeight =
             Resources.getSystem().getDisplayMetrics().heightPixels;
 
-    public Obsatcle(Bitmap bmp, int x, int y){
+    public Obstacle(Bitmap bmp, int x, int y){
         image1 = bmp;
         xX = x;
         yY = y;
