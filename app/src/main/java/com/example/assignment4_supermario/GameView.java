@@ -14,7 +14,9 @@ import android.graphics.Matrix;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
-    private Bitmap back; //
+    private Background back;
+    public static final int WIDTH = 1920;
+    public static final int HEIGHT = 1080;
     private Bitmap cloud;
     public static int gapHeight = 600;
     public static int velocity = 150;
@@ -40,7 +42,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         thread.start();
 
         //We need to change this
-        back = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.sky),screenWidth,screenHeight);
+        back = new Background(BitmapFactory.decodeResource(getResources(),R.drawable.background1));
+        back.setVector(-5);
         character[0] = new Character(getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.small1), 100, 100));
         character[1] = new Character(getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.small2), 100, 100));
         character[2] = new Character(getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.small3), 100, 100));
@@ -68,6 +71,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
     public void update(){
+        back.update();
         mario.update();
         pipe1.update();
     }
@@ -76,9 +80,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas){
         super.draw(canvas);
         if(canvas != null){
-            canvas.drawBitmap(back,0,0,null);
-            mario.draw(canvas);
-            pipe1.draw(canvas);
+          back.draw(canvas);
+          mario.draw(canvas);
+          pipe1.draw(canvas);
+
         }
     }
 
