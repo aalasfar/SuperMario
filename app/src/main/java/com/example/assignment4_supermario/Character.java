@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 
 public class Character {
     private Bitmap image;
+    
     Canvas canvas;
     public int x, y;
 
