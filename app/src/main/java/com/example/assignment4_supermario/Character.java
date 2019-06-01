@@ -36,8 +36,22 @@ public class Character extends Object{
     public void setRight(boolean b){
         if(!b){
             animation.setFrame(0);
+            animation.setRight(false);
+        }
+        else if(b){
+            animation.setRight(true);
         }
         right = b;}
+
+    public void setLeft(boolean b){
+        if(!b){
+            animation.setFrame(12);
+            animation.setLeft(false);
+        }
+        else if(b){
+            animation.setLeft(true);
+        }
+        left = b;}
 
     public void draw(Canvas canvas){
             canvas.drawBitmap(animation.getImage(), x, y, null);
@@ -47,16 +61,23 @@ public class Character extends Object{
         // here we can make mario move by himself
         animation.update();
 
-        if(!right){
+        if(right){
             dx = (int)(dxa+= 1);
-            System.out.println(dx);
+            if(dx > 5){
+                dx =5;
+            }
+            if (x > 960){
+                dx = 0;
+            }
         }
-        if(dx > 5){
-            dx =5;
-        }
-
-        if (x > 960){
-            dx = 0;
+        if(left){
+            dx =(int)(dxa-= 1);
+            if (dx < -5){
+                dx =-5;
+            }
+            if (x <= 0){
+                dx =0;
+            }
         }
         x +=dx;
         dx = 0;

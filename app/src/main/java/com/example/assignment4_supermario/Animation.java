@@ -8,6 +8,8 @@ public class Animation {
     private long delay;
     private long startTime;
     private boolean played;
+    private boolean right;
+    private boolean left;
 
     public void setFrames(Bitmap[] frames){
         this.frames= frames;
@@ -24,19 +26,36 @@ public class Animation {
 
     public void update(){
         long elasped = (System.nanoTime()-startTime)/100000;
-        if(elasped > delay){
-            currentFrame++;
-            startTime= System.nanoTime();
+        if(right) {
+            if (elasped > delay) {
+                currentFrame++;
+                startTime = System.nanoTime();
+            }
+            if (currentFrame >= 4) {
+                currentFrame = 1;
+                played = true;
+            }
         }
-        if (currentFrame == frames.length-3){
-            currentFrame = 1;
-            played = true;
+        if(left) {
+            if (elasped > delay) {
+                currentFrame--;
+                startTime = System.nanoTime();
+            }
+            if (currentFrame <= 8) {
+                currentFrame = 12;
+                played = true;
+            }
         }
     }
 
     public Bitmap getImage(){
         return frames[currentFrame];
     }
+    public void setRight(boolean b){
+        right = b;}
+
+    public void setLeft(boolean b){
+        left = b;}
 
     public int getFrame(){
         return currentFrame;

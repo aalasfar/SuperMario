@@ -15,6 +15,8 @@ import android.graphics.Matrix;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     private Background back;
+    private boolean right;
+    private boolean left;
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1080;
     private Bitmap cloud;
@@ -41,7 +43,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         thread.start();
         back = new Background(BitmapFactory.decodeResource(getResources(),R.drawable.background1));
         back.setVector(-5);
-        mario = new Character(BitmapFactory.decodeResource(getResources(),R.drawable.smallsprites),191,183,7);
+        mario = new Character(BitmapFactory.decodeResource(getResources(),R.drawable.smallsprites),193,183,13);
         count = 0;
         makeLevel();
     }
@@ -67,9 +69,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void update(){
         if(mario.getPlaying()) {
             mario.update();
-            //if(mario.x == WIDTH){
+            if(mario.x >= WIDTH/2){
                 back.update();
-            //}
+            }
         }
         pipe1.update();
     }
@@ -87,18 +89,37 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event){
-        if(event.getAction() == MotionEvent.ACTION_DOWN){
-            if(!mario.getPlaying()){
+        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            int i = (int) event.getX();
+            if (!mario.getPlaying()) {
                 mario.setPlaying(true);
             }
-            else {
+            System.out.println(i);
+            if (i > 960) {
                 mario.setRight(true);
+                right = true;
+                return true;
             }
-            return true;
+
+            else if (i < 960){
+                    mario.setLeft(true);
+                    left = true;
+                return true;
+            }
         }
         if (event.getAction() == MotionEvent.ACTION_UP){
-            mario.setRight(false);
+            if(right){
+                mario.setRight(false);
+                mario.resetDXA();
+                right = false;
+            }
+            else if (left) {
+                mario.setLeft(false);
+                left = false;
+                mario.resetDXA();
+            }
             mario.setPlaying(false);
+
             return true;
         }
 
