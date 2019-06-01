@@ -15,8 +15,7 @@ import android.graphics.Matrix;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     private Background back;
-    private boolean right;
-    private boolean left;
+    private boolean right, left, jump;
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1080;
     private Bitmap cloud;
@@ -105,6 +104,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     mario.setLeft(true);
                     left = true;
                 return true;
+            }
+            else if(i < 960){
+                mario.setJump(true);
+                jump = true;
             }
         }
         if (event.getAction() == MotionEvent.ACTION_UP){
