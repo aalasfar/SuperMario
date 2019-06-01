@@ -8,6 +8,8 @@ import android.graphics.Matrix;
 public class Character extends Object{
     private Bitmap smallsprite;
     private double dxa;
+    private int leftSpeed = -8;
+    private int rightSpeed = 8;
     private boolean left;
     private boolean right;
     private boolean playing;
@@ -29,7 +31,7 @@ public class Character extends Object{
         }
 
         animation.setFrames(image);
-        animation.setDelay(1000);
+        animation.setDelay(500);
 
 
     }
@@ -63,8 +65,8 @@ public class Character extends Object{
 
         if(right){
             dx = (int)(dxa+= 1);
-            if(dx > 5){
-                dx =5;
+            if(dx > rightSpeed){
+                dx =rightSpeed;
             }
             if (x > 960){
                 dx = 0;
@@ -72,8 +74,8 @@ public class Character extends Object{
         }
         if(left){
             dx =(int)(dxa-= 1);
-            if (dx < -5){
-                dx =-5;
+            if (dx < leftSpeed){
+                dx =leftSpeed;
             }
             if (x <= 0){
                 dx =0;
