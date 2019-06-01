@@ -25,9 +25,9 @@ public class Animation {
     }
 
     public void update(){
-        long elasped = (System.nanoTime()-startTime)/100000;
+        long elapsed = (System.nanoTime()-startTime)/100000;
         if(right) {
-            if (elasped > delay) {
+            if (elapsed > delay) {
                 currentFrame++;
                 startTime = System.nanoTime();
             }
@@ -37,7 +37,7 @@ public class Animation {
             }
         }
         if(left) {
-            if (elasped > delay) {
+            if (elapsed > delay) {
                 currentFrame--;
                 startTime = System.nanoTime();
             }

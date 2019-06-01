@@ -95,13 +95,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 mario.setPlaying(true);
             }
             System.out.println(i);
-            if (i > 960) {
+            if (i > 1700 && i < WIDTH) {
                 mario.setRight(true);
                 right = true;
                 return true;
             }
 
-            else if (i < 960){
+            else if (i > 1400 && i < 1700){
                     mario.setLeft(true);
                     left = true;
                 return true;
