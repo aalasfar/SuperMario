@@ -10,6 +10,7 @@ public class Animation {
     private boolean played;
     private boolean right;
     private boolean left;
+    private boolean jump;
 
     public void setFrames(Bitmap[] frames){
         this.frames= frames;
@@ -46,6 +47,9 @@ public class Animation {
                 played = true;
             }
         }
+        if(jump){
+            //add code for when jump is activated 
+        }
     }
 
     public Bitmap getImage(){
@@ -56,6 +60,8 @@ public class Animation {
 
     public void setLeft(boolean b){
         left = b;}
+    public void setJump(boolean b){
+        jump = b;}
 
     public int getFrame(){
         return currentFrame;

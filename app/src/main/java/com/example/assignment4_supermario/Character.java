@@ -59,6 +59,13 @@ public class Character extends Object{
         left = b;}
 
     public void setJump(boolean b){
+        if (!b) {
+            animation.setFrame(0);
+            animation.setJump(false);
+        }
+        else if(b){
+            animation.setJump(true);
+        }
         jump = b;}
 
     public void draw(Canvas canvas){
