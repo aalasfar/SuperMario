@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 
 public class Obstacle {
 
+    private boolean playing;
     private Bitmap image1;
     public int xX, yY;
     private int screenHeight =
@@ -22,5 +23,15 @@ public class Obstacle {
     }
     public void update(){
         //update anything
+        if(playing) {
+            xX -= 15;
+            if (xX <= 0) {
+                xX = GameView.WIDTH;
+            }
+        }
+    }
+    public void setPlaying(boolean b){
+
+        playing = b;
     }
 }

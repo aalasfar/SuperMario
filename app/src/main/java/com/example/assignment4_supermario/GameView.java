@@ -20,8 +20,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public static final int HEIGHT = 1080;
     private Bitmap cloud;
     public static int gapHeight = 600;
-    public static int velocity = 150;
-    public Obstacle pipe1;
+    public static int velocity = 15;
+    public Obstacle pipe;
     private Character mario;
     private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
@@ -72,7 +72,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 back.update();
             }
         }
-        pipe1.update();
+        pipe.update();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(canvas != null){
           back.draw(canvas);
           mario.draw(canvas);
-          pipe1.draw(canvas);
+          pipe.draw(canvas);
 
         }
     }
@@ -92,6 +92,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             int i = (int) event.getX();
             if (!mario.getPlaying()) {
                 mario.setPlaying(true);
+                pipe.setPlaying(true);
             }
             System.out.println(i);
             if (i > 1700 && i < WIDTH) {
@@ -218,16 +219,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     */
     public void makeLevel(){
         Bitmap bmp;
-        int y, x;
        bmp = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.pipe),150,
               150);
-        pipe1 = new Obstacle(bmp, 700, 100);
+        pipe= new Obstacle(bmp, 700, -20);
     }
 
     public void moveScreenLeft(){
-        pipe1.xX -= velocity;
-        if(pipe1.xX <= 0){
-            pipe1.xX = screenWidth;
+        pipe.xX -= velocity;
+        if(pipe.xX <= 0){
+            pipe.xX = screenWidth;
         }
     }
 
