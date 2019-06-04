@@ -68,7 +68,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void update(){
         if(mario.getPlaying()) {
             mario.update();
-            if(mario.x >= WIDTH/2){
+            if(mario.x > WIDTH/2 && right ){
                 back.update();
             }
         }
@@ -111,6 +111,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 jump = true;
             }
         }
+        if(event.getAction() == MotionEvent.ACTION_POINTER_DOWN){
+            int i = (int) event.getX();
+            System.out.println("Second touch detected");
+            if(i < 960) {
+                mario.setJump(true);
+                jump = true;
+            }
+        }
         if (event.getAction() == MotionEvent.ACTION_UP){
             if(right){
                 mario.setRight(false);
@@ -122,7 +130,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 left = false;
                 mario.resetDXA();
             }
-            mario.setPlaying(false);
+           // mario.setPlaying(false);
 
             return true;
         }

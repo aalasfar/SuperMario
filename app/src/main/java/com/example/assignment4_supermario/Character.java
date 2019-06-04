@@ -10,14 +10,14 @@ public class Character extends Object{
     private double dxa, dya;
     private int leftSpeed = -8;
     private int rightSpeed = 8;
-    private int upSpeed = 15;
-    private double gravity = -9.8;
+    private int upSpeed = 12;
+    private double gravity = -3.8;
     private double t = 0.0;
     private boolean left, right, jump;
     private boolean playing;
     private Animation animation = new Animation();
     Canvas canvas;
-    private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+    private int screenHeight = 1080;
 
     public Character(Bitmap bmp,int w, int h, int numFrames){
         x = 100;
@@ -96,72 +96,29 @@ public class Character extends Object{
         x +=dx;
         dx = 0;
         if(jump) {
-            dy = (int) (dya + (upSpeed * t) + (0.5 * gravity * t * t));
+            dy = (int)((upSpeed * t) + (0.5 * gravity * t * t));
             if (y > screenHeight - 300) {
                 dy = 0;
+                y = screenHeight -300;
+                t = 0;
                 jump = false;
+                animation.setFrame(0);
+                animation.setJump(false);
             }
-            else{
-                jump = true;
-            }
-            //dya = dy;
-            t += 0.025;
+            t += 0.3;
             y -= dy;
             System.out.println(y);
             dy =0;
         }
-        //moveHorizontal();
-        //moveVertical();
     }
     public boolean getPlaying(){
-
         return playing;
     }
     public void setPlaying(boolean b){
-
         playing = b;
     }
     public void resetDXA(){
-
         dxa = 0;
     }
-    public void moveHorizontal(){
-        if(right){
-            dx = (int)(dxa+= 1);
-            if(dx > rightSpeed){
-                dx =rightSpeed;
-            }
-            if (x > 960){
-                dx = 0;
-            }
-        }
-        if(left){
-            dx =(int)(dxa-= 1);
-            if (dx < leftSpeed){
-                dx =leftSpeed;
-            }
-            if (x <= 0){
-                dx =0;
-            }
-        }
-        x +=dx;
-        dx = 0;
-    }
 
-    public void moveVertical(){
-        if(jump) {
-            dy = (int) (dya + (upSpeed * t) + (0.5 * gravity * t * t));
-            if (dy > screenHeight - 300) {
-                dy = screenHeight - 300;
-                jump = false;
-            }
-            else{
-                jump = true;
-            }
-            //dya = dy;
-            t += 0.025;
-            y += dy;
-            dy =0;
-        }
-    }
 }
