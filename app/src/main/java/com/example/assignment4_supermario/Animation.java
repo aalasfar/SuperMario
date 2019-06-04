@@ -48,7 +48,7 @@ public class Animation {
             }
         }
         if(jump){
-            //add code for when jump is activated 
+            currentFrame = 5;
         }
     }
 

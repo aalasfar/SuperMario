@@ -75,8 +75,43 @@ public class Character extends Object{
     public void update(){
         // here we can make mario move by himself
         animation.update();
-        moveHorizontal();
-        moveVertical();
+        if(right){
+            dx = (int)(dxa+= 1);
+            if(dx > rightSpeed){
+                dx =rightSpeed;
+            }
+            if (x > 960){
+                dx = 0;
+            }
+        }
+        if(left){
+            dx =(int)(dxa-= 1);
+            if (dx < leftSpeed){
+                dx =leftSpeed;
+            }
+            if (x <= 0){
+                dx =0;
+            }
+        }
+        x +=dx;
+        dx = 0;
+        if(jump) {
+            dy = (int) (dya + (upSpeed * t) + (0.5 * gravity * t * t));
+            if (y > screenHeight - 300) {
+                dy = 0;
+                jump = false;
+            }
+            else{
+                jump = true;
+            }
+            //dya = dy;
+            t += 0.025;
+            y -= dy;
+            System.out.println(y);
+            dy =0;
+        }
+        //moveHorizontal();
+        //moveVertical();
     }
     public boolean getPlaying(){
 
@@ -115,17 +150,18 @@ public class Character extends Object{
 
     public void moveVertical(){
         if(jump) {
-            y = (int) (dy + upSpeed * t + 0.5 * gravity * t * t);
-            if (y > screenHeight - 300) {
-                y = screenHeight - 300;
+            dy = (int) (dya + (upSpeed * t) + (0.5 * gravity * t * t));
+            if (dy > screenHeight - 300) {
+                dy = screenHeight - 300;
                 jump = false;
             }
             else{
-                //dy = y;
-                dy = y;
                 jump = true;
             }
+            //dya = dy;
             t += 0.025;
+            y += dy;
+            dy =0;
         }
     }
 }
