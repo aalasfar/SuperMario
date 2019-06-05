@@ -15,11 +15,11 @@ public class Obstacle {
     public Obstacle(Bitmap bmp, int x, int y){
         image1 = bmp;
         xX = x;
-        yY = y;
+        yY = y + screenHeight/2;
     }
 
     public void draw(Canvas canvas){
-        canvas.drawBitmap(image1,xX,screenHeight/2+yY,null);
+        canvas.drawBitmap(image1,xX,yY,null);
     }
     public void update(){
         //update anything

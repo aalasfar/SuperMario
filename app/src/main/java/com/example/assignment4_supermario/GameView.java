@@ -26,6 +26,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
     public int x, y, count;
+    private int marioWidth = 193;
+    private int marioHeight = 183;
 
 
 
@@ -42,7 +44,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         thread.start();
         back = new Background(BitmapFactory.decodeResource(getResources(),R.drawable.background1));
         back.setVector(-5);
-        mario = new Character(BitmapFactory.decodeResource(getResources(),R.drawable.smallsprites),193,183,13);
+        mario = new Character(BitmapFactory.decodeResource(getResources(),R.drawable.smallsprites),marioWidth,marioHeight,13);
         count = 0;
         makeLevel();
     }
@@ -68,10 +70,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void update(){
         if(mario.getPlaying()) {
             mario.update();
+            logic();
             if(mario.x > WIDTH/2 && right ){
                 back.update();
                 brick.update();
-
             }
         }
     }
@@ -89,52 +91,83 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event){
-        if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            int i = (int) event.getX();
-            if (!mario.getPlaying()) {
-                mario.setPlaying(true);
-            }
-            System.out.println(i);
-            if (i > 1500 && i < WIDTH) {
-                mario.setRight(true);
-                right = true;
-                brick.setPlaying(true);
-                return true;
-            }
+        int pointerIndex = event.getActionIndex();
 
-            else if (i > 1000 && i < 1400){
+        // get pointer ID
+        int pointerId = event.getPointerId(pointerIndex);
+
+        // get masked (not specific to a pointer) action
+        int maskedAction = event.getActionMasked();
+
+        switch (maskedAction) {
+
+            case MotionEvent.ACTION_DOWN:
+                int i = (int) event.getX();
+                if (!mario.getPlaying()) {
+                    mario.setPlaying(true);
+                }
+                //System.out.println(i);
+                if (i > 1680 && i < WIDTH) {
+                    mario.setRight(true);
+                    right = true;
+                    brick.setPlaying(true);
+                    return true;
+                }
+
+                else if (i > 1440 && i < 1680){
                     mario.setLeft(true);
                     left = true;
-                return true;
+                    return true;
+                }
+                else if(i < 960){
+                    mario.setJump(true);
+                    jump = true;
+                    return true;
+                }
+            case MotionEvent.ACTION_POINTER_DOWN: {
+                // TODO use data
+                int j = (int) event.getX(pointerIndex);
+                // System.out.println(j);
+                if (j > 1680 && j < WIDTH) {
+                    mario.setRight(true);
+                    right = true;
+                    brick.setPlaying(true);
+                    return true;
+                }
+                else if (j > 1440 && j < 1680){
+                    mario.setLeft(true);
+                    left = true;
+                    return true;
+                }
+                else if(j < 960){
+                    mario.setJump(true);
+                    jump = true;
+                    return true;
+                }
+                break;
             }
-            else if(i < 960){
-                mario.setJump(true);
-                jump = true;
+            case MotionEvent.ACTION_MOVE: { // a pointer was moved
+                // TODO use data
+                break;
             }
-        }
-        if(event.getAction() == MotionEvent.ACTION_POINTER_DOWN){
-            int i = (int) event.getX();
-            System.out.println("Second touch detected");
-            if(i < 960) {
-                mario.setJump(true);
-                jump = true;
+            case MotionEvent.ACTION_UP:
+                brick.setPlaying(false);
+                if(right){
+                    mario.setRight(false);
+                    mario.resetDXA();
+                    right = false;
+                }
+                else if (left) {
+                    mario.setLeft(false);
+                    left = false;
+                    mario.resetDXA();
+                }
+            case MotionEvent.ACTION_POINTER_UP:
+            case MotionEvent.ACTION_CANCEL: {
+                // TODO use data
+                break;
             }
-        }
-        if (event.getAction() == MotionEvent.ACTION_UP){
-            brick.setPlaying(false);
-            if(right){
-                mario.setRight(false);
-                mario.resetDXA();
-                right = false;
-            }
-            else if (left) {
-                mario.setLeft(false);
-                left = false;
-                mario.resetDXA();
-            }
-           // mario.setPlaying(false);
-
-            return true;
+            // mario.setPlaying(false);   return true;
         }
 
         return super.onTouchEvent(event);
@@ -156,77 +189,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     /*********** logic for checking collision *******/
-    /*
-    public void logic() {
-
-//        if(characterSprite.x + 10 >= pipe1.xX){
-//            Stop(characterSprite.x);
-//        }
-
-        /*
-        //Detect if the character is touching one of the pipes
-        if (characterSprite.y < pipe1.yY + (screenHeight / 2) - (gapHeight / 2)
-                && characterSprite.x + 200 > pipe1.xX && characterSprite.x < pipe1.xX + 150)
-        { resetLevel(); }
-
-        if (characterSprite.y < pipe2.yY + (screenHeight / 2) - (gapHeight / 2)
-                && characterSprite.x + 200 > pipe2.xX && characterSprite.x < pipe2.xX + 150)
-        { resetLevel(); }
-
-        if (characterSprite.y < pipe3.yY + (screenHeight / 2) - (gapHeight / 2)
-                && characterSprite.x + 200 > pipe3.xX && characterSprite.x < pipe3.xX + 150)
-        { resetLevel(); }
-
-        if (characterSprite.y + 140 > (screenHeight / 2) + (gapHeight / 2) + pipe1.yY
-                && characterSprite.x + 200 > pipe1.xX && characterSprite.x < pipe1.xX + 150)
-        { resetLevel(); }
-
-        if (characterSprite.y + 140 > (screenHeight / 2) + (gapHeight / 2) + pipe2.yY
-                && characterSprite.x + 200 > pipe2.xX && characterSprite.x < pipe2.xX + 150)
-        { resetLevel(); }
-
-        if (characterSprite.y + 140 > (screenHeight / 2) + (gapHeight / 2) + pipe3.yY
-                && characterSprite.x + 200 > pipe3.xX && characterSprite.x < pipe3.xX + 150)
-        { resetLevel(); }
-*/
-        //Detect if the character has gone off the
-        //bottom or top of the screen
-
-      /*  if (characterSprite.y + 140 < 0) {
-            resetLevel(); }
-        if (characterSprite.y > screenHeight) {
-            resetLevel(); }
-
-
-        //If the pipe goes off the left of the screen,
-        //put it forward at a randomized distance and height
-        if (pipe1.xX + 150 < 0) {
-            Random r = new Random();
-            int value1 = r.nextInt(150);
-            int value2 = r.nextInt(150);
-            pipe1.xX = screenWidth + value1 + 100;
-            pipe1.yY = value2 - 250;
-            //
-            xCloud = screenWidth - 200;
+    public void logic(){
+        //((mario.x+marioWidth>=brick.xX && mario.x+marioWidth <= brick.xX+150) || (mario.x>=brick.xX && mario.x <= brick.xX+150))){
+        if(mario.y <= brick.yY+150){
+            mario.y = brick.yY + 150;
         }
+        //if(mario.y+marioHeight >= brick.yY)
 
-        if (pipe2.xX + 150 < 0) {
-            Random r = new Random();
-            int value1 = r.nextInt(150);
-            int value2 = r.nextInt(150);
-            pipe2.xX = screenWidth + value1 + 100;
-            pipe2.yY = value2 - 250;
-        }
-
-        if (pipe3.xX + 150 < 0) {
-            Random r = new Random();
-            int value1 = r.nextInt(150);
-            int value2 = r.nextInt(150);
-            pipe3.xX = screenWidth + value1 + 100;
-            pipe3.yY = value2 - 250;
-        }
     }
-    */
     public void makeLevel(){
         Bitmap bmp;
        bmp = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.brick),150,

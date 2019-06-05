@@ -10,7 +10,7 @@ public class Character extends Object{
     private double dxa, dya;
     private int leftSpeed = -8;
     private int rightSpeed = 8;
-    private int upSpeed = 12;
+    private int upSpeed = 15;
     private double gravity = -3.8;
     private double t = 0.0;
     private boolean left, right, jump;
@@ -105,6 +105,7 @@ public class Character extends Object{
                 animation.setFrame(0);
                 animation.setJump(false);
             }
+            //logic();
             t += 0.3;
             y -= dy;
             System.out.println(y);
