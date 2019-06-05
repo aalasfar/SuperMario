@@ -19,12 +19,12 @@ public class Obstacle {
     }
 
     public void draw(Canvas canvas){
-        canvas.drawBitmap(image1,xX,((screenHeight/2)+(GameView.gapHeight/2))+yY,null);
+        canvas.drawBitmap(image1,xX,screenHeight/2+yY,null);
     }
     public void update(){
         //update anything
         if(playing) {
-            xX -= 15;
+            xX -= 5;
             if (xX <= 0) {
                 xX = GameView.WIDTH;
             }

@@ -21,7 +21,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap cloud;
     public static int gapHeight = 600;
     public static int velocity = 15;
-    public Obstacle pipe;
+    public Obstacle brick;
     private Character mario;
     private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
@@ -70,9 +70,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             mario.update();
             if(mario.x > WIDTH/2 && right ){
                 back.update();
+                brick.update();
+
             }
         }
-        pipe.update();
     }
 
     @Override
@@ -81,7 +82,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(canvas != null){
           back.draw(canvas);
           mario.draw(canvas);
-          pipe.draw(canvas);
+          brick.draw(canvas);
 
         }
     }
@@ -92,16 +93,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             int i = (int) event.getX();
             if (!mario.getPlaying()) {
                 mario.setPlaying(true);
-                pipe.setPlaying(true);
             }
             System.out.println(i);
-            if (i > 1700 && i < WIDTH) {
+            if (i > 1500 && i < WIDTH) {
                 mario.setRight(true);
                 right = true;
+                brick.setPlaying(true);
                 return true;
             }
 
-            else if (i > 1400 && i < 1700){
+            else if (i > 1000 && i < 1400){
                     mario.setLeft(true);
                     left = true;
                 return true;
@@ -120,6 +121,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
         if (event.getAction() == MotionEvent.ACTION_UP){
+            brick.setPlaying(false);
             if(right){
                 mario.setRight(false);
                 mario.resetDXA();
@@ -227,15 +229,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     */
     public void makeLevel(){
         Bitmap bmp;
-       bmp = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.pipe),150,
+       bmp = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.brick),150,
               150);
-        pipe= new Obstacle(bmp, 700, -20);
+        brick= new Obstacle(bmp, 700, -20);
     }
 
     public void moveScreenLeft(){
-        pipe.xX -= velocity;
-        if(pipe.xX <= 0){
-            pipe.xX = screenWidth;
+        brick.xX -= velocity;
+        if(brick.xX <= 0){
+            brick.xX = screenWidth;
         }
     }
 
