@@ -9,8 +9,7 @@ public class Obstacle {
     private boolean playing;
     private Bitmap image1;
     public int xX, yY;
-    private int screenHeight =
-            Resources.getSystem().getDisplayMetrics().heightPixels;
+    private int screenHeight = 1080;
 
     public Obstacle(Bitmap bmp, int x, int y){
         image1 = bmp;
