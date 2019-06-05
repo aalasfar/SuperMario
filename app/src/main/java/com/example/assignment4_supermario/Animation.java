@@ -42,13 +42,13 @@ public class Animation {
                 currentFrame--;
                 startTime = System.nanoTime();
             }
-            if (currentFrame <= 8) {
-                currentFrame = 12;
+            if (currentFrame <= 7) {
+                currentFrame = 10;
                 played = true;
             }
         }
         if(jump){
-            currentFrame = 5;
+            currentFrame = 4;
         }
     }
 

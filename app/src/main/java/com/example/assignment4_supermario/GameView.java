@@ -26,8 +26,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
     public int x, y, count;
-    final int marioWidth = 193;
-    final int marioHeight = 183;
+    final private int smallmarioWidth = 91;
+    final private int smallmarioHeight = 91;
+    final private int bigmarioWidth = 101;
+    final private int bigmarioHeight = 183;
+
 
 
 
@@ -44,7 +47,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         thread.start();
         back = new Background(BitmapFactory.decodeResource(getResources(),R.drawable.background1));
         back.setVector(-5);
-        mario = new Character(BitmapFactory.decodeResource(getResources(),R.drawable.smallsprites),marioWidth,marioHeight,13);
+        mario = new Character(BitmapFactory.decodeResource(getResources(),R.drawable.smallsprites),smallmarioWidth,smallmarioHeight,11);
         count = 0;
         makeLevel();
     }
@@ -190,13 +193,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     /*********** logic for checking collision *******/
     public void logic(){
-        if((mario.x+marioWidth>=brick.xX && mario.x+marioWidth <= brick.xX+150) || (mario.x>=brick.xX && mario.x <= brick.xX+150))
+        if((mario.x+smallmarioWidth>=brick.xX && mario.x+smallmarioWidth <= brick.xX+150) || (mario.x>=brick.xX && mario.x <= brick.xX+150))
         {
             if (mario.y <= brick.yY + 150 && mario.y>= brick.yY) {
                 mario.y = brick.yY + 150;
             }
-            else if(mario.y+marioHeight >= brick.yY){
-                mario.y = brick.yY - marioHeight;
+            else if(mario.y+smallmarioHeight >= brick.yY){
+                mario.y = brick.yY - smallmarioHeight;
                 mario.setJump(false);
             }
         }

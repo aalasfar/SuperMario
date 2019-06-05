@@ -50,7 +50,7 @@ public class Character extends Object{
 
     public void setLeft(boolean b){
         if(!b){
-            animation.setFrame(12);
+            animation.setFrame(10);
             animation.setLeft(false);
         }
         else if(b){
