@@ -131,7 +131,7 @@ public class Character extends Object{
             }
             if (collision == 2) {
                 dy = 0;
-                y = dya + height;
+                y = dya - height;
                 t = 0;
                 jump = false;
                 down = true;
@@ -155,7 +155,7 @@ public class Character extends Object{
             }
             if (collision == 2) {
                 dy = 0;
-                y = dya + height;
+                y = dya - height;
                 down = false;
                 t = 0;
             }
