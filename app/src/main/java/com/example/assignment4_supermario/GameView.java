@@ -50,7 +50,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         back.setVector(-5);
         mario = new Character(BitmapFactory.decodeResource(getResources(),R.drawable.smallsprites),smallmarioWidth,smallmarioHeight,11,1);
         count = 0;
-        makeLevel();
+       // makeLevel();
 
     }
 
@@ -75,10 +75,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void update(){
         if(mario.getPlaying()) {
             mario.update();
-            Collision(mario,brick);
-            if(mario.x > WIDTH/2 && right ){
+           // Collision(mario,brick)
+            if(mario.x >= WIDTH/2 && right ){
                 back.update();
-                brick.update();
+                //brick.update();
             }
         }
     }
@@ -89,7 +89,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(canvas != null){
           back.draw(canvas);
           mario.draw(canvas);
-          brick.draw(canvas);
+          Obstacle.blocks[0].draw(canvas,91,91);
 
         }
     }
@@ -115,7 +115,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 if (i > 1680 && i < WIDTH) {
                     mario.setRight(true);
                     right = true;
-                    brick.setPlaying(true);
+                    //brick.setPlaying(true);
                     return true;
                 }
 
@@ -137,7 +137,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     if(!left) {
                         mario.setRight(true);
                         right = true;
-                        brick.setPlaying(true);
+                      //  brick.setPlaying(true);
                         return true;
                     }
                 }
@@ -160,7 +160,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 break;
             }
             case MotionEvent.ACTION_UP:
-                brick.setPlaying(false);
+                //brick.setPlaying(false);
                 if(right){
                     mario.setRight(false);
                     mario.resetDXA();
@@ -258,7 +258,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         Bitmap bmp;
        bmp = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.brick),91,
               91);
-        brick= new Obstacle(bmp, 700, -20, 91,91);
+        //brick= new Obstacle(bmp, 700, -2,1 );
     }
 
     public void moveScreenLeft(){

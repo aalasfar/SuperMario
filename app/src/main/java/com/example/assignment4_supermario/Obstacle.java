@@ -6,21 +6,27 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 
 public class Obstacle extends Object{
+    //static stuff here
+    public static Obstacle[] blocks = new Obstacle[256];
+    public static Obstacle brick = new Brick(0);
+    public static Obstacle floor = new Floor(1);
 
+    //class
     private boolean playing;
-    private Bitmap image1;
+    public static final int BLOCKWIDTH = 91, BLOCKHEIGHT =91;
+    private Bitmap image;
     private int screenHeight = 1080;
+    public final int id;
 
-    public Obstacle(Bitmap bmp, int x, int y,int w, int h){
-        image1 = bmp;
-        width = w;
-        height = h;
-        this.x = x;
-        this.y = y + screenHeight/2 +350;
+    public Obstacle(Bitmap image,int id){
+        this.id = id;
+        this.image = image;
+
+        blocks[id] = this;
     }
 
-    public void draw(Canvas canvas){
-        canvas.drawBitmap(image1,x,y,null);
+    public void draw(Canvas canvas, int x, int y){
+        canvas.drawBitmap(image,x,y,null);
     }
     public void update(){
         //update anything
@@ -31,13 +37,18 @@ public class Obstacle extends Object{
             }
         }
     }
+
+    public boolean isSolid(){
+        return false;
+    }
+
     public void setPlaying(boolean b){
 
         playing = b;
     }
     public boolean characterCollide(int posx, int posy){
 
-        Rect r1 = getRectangle(posx, posy, 91, 91);;
+        Rect r1 = getRectangle(posx, posy, 91, 91);
         Rect r2 = getRectangle(x, y, 91, 91);
 
         if(r2.contains(r1.left,r1.top) || r2.contains(r1.right,r1.top) || r2.contains(r1.left, r1.bottom) || r2.contains(r1.right, r1.bottom)){
