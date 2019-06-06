@@ -37,7 +37,7 @@ public class Obstacle extends Object{
     public boolean characterCollide(Character character){
 
         Rect r1 = getRectangle(character.x, character.y, character.width, character.height);;
-        Rect r2 = getRectangle(xX, yY, 100, 100);
+        Rect r2 = getRectangle(xX, yY, 91, 91);
 
         if(r2.contains(r1.left,r1.top) || r2.contains(r1.right,r1.top) || r2.contains(r1.left, r1.bottom) || r2.contains(r1.right, r1.bottom)){
             return true;

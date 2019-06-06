@@ -229,8 +229,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void makeLevel(){
         Bitmap bmp;
-       bmp = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.brick),100,
-              100);
+       bmp = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.brick),91,
+              91);
         brick= new Obstacle(bmp, 700, -20);
     }
 
