@@ -37,7 +37,8 @@ public class Object {
         return height;
     }
 
-    public Rect getRectangle(){
-        return new Rect(x,y,x+width,y+height);
+    public Rect getRectangle(int i, int j, int w, int h){
+        return new Rect(i, j, i + w, j + h);
     }
+
 }

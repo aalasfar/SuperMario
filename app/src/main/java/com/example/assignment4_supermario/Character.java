@@ -10,18 +10,19 @@ public class Character extends Object{
     private double dxa, dya;
     private int leftSpeed = -8;
     private int rightSpeed = 8;
-    private int upSpeed = 15;
-    private double gravity = -9.8;
+    private int upSpeed = 18;
+    private double gravity = -7;
     private double t = 0.0;
     private boolean left, right, jump;
     private boolean playing;
     private Animation animation = new Animation();
-    Canvas canvas;
+    private int position = 200;
     private int screenHeight = 1080;
-
+//    final int bigmarioWidth = 101;
+//    final int bigmarioHeight = 183;
     public Character(Bitmap bmp,int w, int h, int numFrames){
         x = 100;
-        y = screenHeight - 300;
+        y = screenHeight - position;
         dy = 0;
         dya = 0;
         height=h;
@@ -97,16 +98,15 @@ public class Character extends Object{
         dx = 0;
         if(jump) {
             dy = (int)((upSpeed * t) + (0.5 * gravity * t * t));
-            if (y > screenHeight - 300) {
+            if (y > screenHeight - position) {
                 dy = 0;
-                y = screenHeight -300;
+                y = screenHeight -position;
                 t = 0;
                 jump = false;
                 animation.setFrame(0);
                 animation.setJump(false);
             }
-            //logic();
-            t += 0.03;
+            t += 0.1;
             y -= dy;
             System.out.println(y);
             dy =0;

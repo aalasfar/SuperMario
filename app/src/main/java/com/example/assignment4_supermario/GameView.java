@@ -23,13 +23,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public static int velocity = 15;
     public Obstacle brick;
     private Character mario;
+    final int smallmarioWidth = 91;
+    final int smallmarioHeight = 91;
+
     private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
     public int x, y, count;
-    final private int smallmarioWidth = 91;
-    final private int smallmarioHeight = 91;
-    final private int bigmarioWidth = 101;
-    final private int bigmarioHeight = 183;
+
 
 
 
@@ -74,6 +74,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(mario.getPlaying()) {
             mario.update();
             logic();
+            gravity(mario,brick);
             if(mario.x > WIDTH/2 && right ){
                 back.update();
                 brick.update();
@@ -193,6 +194,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     /*********** logic for checking collision *******/
     public void logic(){
+        boolean collision = brick.characterCollide(mario);
+        if(collision){
+            //BOTTOM
+            if(mario.y + smallmarioHeight >= brick.yY + 100){
+                mario.y = brick.yY + 100;
+            }
+            // TOP
+            else if(mario.y <= brick.yY + 100){
+                mario.setJump(false);
+                mario.y = brick.yY - smallmarioHeight;
+            }
+        }
+
+        /*
         if((mario.x+smallmarioWidth>=brick.xX && mario.x+smallmarioWidth <= brick.xX+150) || (mario.x>=brick.xX && mario.x <= brick.xX+150))
         {
             if (mario.y <= brick.yY + 150 && mario.y>= brick.yY) {
@@ -202,12 +217,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 mario.y = brick.yY - smallmarioHeight;
                 mario.setJump(false);
             }
+        }*/
+    }
+
+    public void gravity(Character character, Obstacle obstacle){
+        if((character.x > obstacle.xX + 100 || character.x+smallmarioWidth < obstacle.xX)&&character.y+smallmarioHeight<= obstacle.yY){
+            character.setJump(true);
         }
     }
+
+
     public void makeLevel(){
         Bitmap bmp;
-       bmp = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.brick),150,
-              150);
+       bmp = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.brick),100,
+              100);
         brick= new Obstacle(bmp, 700, -20);
     }
 

@@ -3,8 +3,9 @@ package com.example.assignment4_supermario;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
-public class Obstacle {
+public class Obstacle extends Object{
 
     private boolean playing;
     private Bitmap image1;
@@ -32,5 +33,21 @@ public class Obstacle {
     public void setPlaying(boolean b){
 
         playing = b;
+    }
+    public boolean characterCollide(Character character){
+
+        Rect r1 = getRectangle(character.x, character.y, character.width, character.height);;
+        Rect r2 = getRectangle(xX, yY, 100, 100);
+
+        if(r2.contains(r1.left,r1.top) || r2.contains(r1.right,r1.top) || r2.contains(r1.left, r1.bottom) || r2.contains(r1.right, r1.bottom)){
+            return true;
+        }
+//                if(r2.contains(r1.left,r1.top) || r2.contains(r1.right,r1.top)){
+//                    return 1;
+//                }
+//                if(r2.contains(r1.left, r1.bottom) || r2.contains(r1.right, r1.bottom)){
+//                    return 2;
+//                }
+        return false;
     }
 }
