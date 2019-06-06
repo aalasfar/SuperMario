@@ -223,8 +223,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 character.setCollision(1,obstacle.y);
             }
             // TOP of Mario
-            if (character.y <= obstacle.y + obstacle.height || (character.x + character.width >= obstacle.x && character.x <= obstacle.x + obstacle.width)
-            && character.y + character.height > obstacle.y + obstacle.height/2) {
+//            if ((character.y <= obstacle.y + obstacle.height || (character.x + character.width >= obstacle.x && character.x <= obstacle.x + obstacle.width))
+//            && character.y + character.height > obstacle.y + obstacle.height/2) {
+//                character.setCollision(2, obstacle.y);
+//            }
+
+            if(character.y + character.height >= obstacle.y && character.y + character.height <= obstacle.y + 8 &&
+                    (character.x + character.width >= obstacle.x && character.x + character.width <= obstacle.x + 8)
+                    || (character.x >= obstacle.x+obstacle.width - 8 && character.x <= obstacle.x+obstacle.width)){
                 character.setCollision(2, obstacle.y);
             }
             //moving right
