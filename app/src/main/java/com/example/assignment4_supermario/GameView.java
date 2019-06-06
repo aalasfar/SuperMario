@@ -92,7 +92,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(canvas != null){
           back.draw(canvas);
           mario.draw(canvas);
-          Obstacle.blocks[0].draw(canvas,91,91);
+          Obstacle.blocks[1].draw(canvas,91,91);
 
         }
     }
