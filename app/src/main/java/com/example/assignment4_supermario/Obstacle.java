@@ -9,24 +9,25 @@ public class Obstacle extends Object{
 
     private boolean playing;
     private Bitmap image1;
-    public int xX, yY;
     private int screenHeight = 1080;
 
-    public Obstacle(Bitmap bmp, int x, int y){
+    public Obstacle(Bitmap bmp, int x, int y,int w, int h){
         image1 = bmp;
-        xX = x;
-        yY = y + screenHeight/2;
+        width = w;
+        height = h;
+        this.x = x;
+        this.y = y + screenHeight/2 +250;
     }
 
     public void draw(Canvas canvas){
-        canvas.drawBitmap(image1,xX,yY,null);
+        canvas.drawBitmap(image1,x,y,null);
     }
     public void update(){
         //update anything
         if(playing) {
-            xX -= 5;
-            if (xX <= 0) {
-                xX = GameView.WIDTH;
+            x -= 5;
+            if (x <= 0) {
+                x = GameView.WIDTH;
             }
         }
     }
@@ -37,7 +38,7 @@ public class Obstacle extends Object{
     public boolean characterCollide(Character character){
 
         Rect r1 = getRectangle(character.x, character.y, character.width, character.height);;
-        Rect r2 = getRectangle(xX, yY, 91, 91);
+        Rect r2 = getRectangle(x, y, 91, 91);
 
         if(r2.contains(r1.left,r1.top) || r2.contains(r1.right,r1.top) || r2.contains(r1.left, r1.bottom) || r2.contains(r1.right, r1.bottom)){
             return true;

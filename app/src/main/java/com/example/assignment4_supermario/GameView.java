@@ -18,13 +18,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private boolean right, left, jump;
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1080;
-    private Bitmap cloud;
     public static int gapHeight = 600;
     public static int velocity = 15;
     public Obstacle brick;
     private Character mario;
-    final int smallmarioWidth = 91;
-    final int smallmarioHeight = 91;
+    final private int smallmarioWidth = 91;
+    final private int smallmarioHeight = 91;
+    final private int bigmarioWidth = 100;
+    final private int bigmarioHeight = 182;
 
     private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
@@ -47,9 +48,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         thread.start();
         back = new Background(BitmapFactory.decodeResource(getResources(),R.drawable.background1));
         back.setVector(-5);
-        mario = new Character(BitmapFactory.decodeResource(getResources(),R.drawable.smallsprites),smallmarioWidth,smallmarioHeight,11);
+        mario = new Character(BitmapFactory.decodeResource(getResources(),R.drawable.smallsprites),smallmarioWidth,smallmarioHeight,11,1);
         count = 0;
         makeLevel();
+
     }
 
     @Override
@@ -73,8 +75,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void update(){
         if(mario.getPlaying()) {
             mario.update();
-            logic();
-            gravity(mario,brick);
+            Collision(mario,brick);
             if(mario.x > WIDTH/2 && right ){
                 back.update();
                 brick.update();
@@ -133,15 +134,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 int j = (int) event.getX(pointerIndex);
                 // System.out.println(j);
                 if (j > 1680 && j < WIDTH) {
-                    mario.setRight(true);
-                    right = true;
-                    brick.setPlaying(true);
-                    return true;
+                    if(!left) {
+                        mario.setRight(true);
+                        right = true;
+                        brick.setPlaying(true);
+                        return true;
+                    }
                 }
                 else if (j > 1440 && j < 1680){
-                    mario.setLeft(true);
-                    left = true;
-                    return true;
+                    if(!right) {
+                        mario.setLeft(true);
+                        left = true;
+                        return true;
+                    }
                 }
                 else if(j < 960){
                     mario.setJump(true);
@@ -165,6 +170,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     mario.setLeft(false);
                     left = false;
                     mario.resetDXA();
+                }
+                else if(jump){
+                    jump = false;
                 }
             case MotionEvent.ACTION_POINTER_UP:
             case MotionEvent.ACTION_CANCEL: {
@@ -193,20 +201,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     /*********** logic for checking collision *******/
-    public void logic(){
-        boolean collision = brick.characterCollide(mario);
-        if(collision){
-            //BOTTOM
-            if(mario.y + smallmarioHeight >= brick.yY + 100){
-                mario.y = brick.yY + 100;
-            }
-            // TOP
-            else if(mario.y <= brick.yY + 100){
-                mario.setJump(false);
-                mario.y = brick.yY - smallmarioHeight;
-            }
-        }
-
         /*
         if((mario.x+smallmarioWidth>=brick.xX && mario.x+smallmarioWidth <= brick.xX+150) || (mario.x>=brick.xX && mario.x <= brick.xX+150))
         {
@@ -218,11 +212,35 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 mario.setJump(false);
             }
         }*/
-    }
 
-    public void gravity(Character character, Obstacle obstacle){
-        if((character.x > obstacle.xX + 100 || character.x+smallmarioWidth < obstacle.xX)&&character.y+smallmarioHeight<= obstacle.yY){
-            character.setJump(true);
+
+    public void Collision(Character character, Obstacle obstacle){
+        boolean collision = obstacle.characterCollide(character);
+        if(collision) {
+            //BOTTOM of Mario
+            if (character.y + character.height >= obstacle.y + obstacle.height || (character.x + character.width >= obstacle.x && character.x <= obstacle.x + obstacle.width)
+            && character.y < obstacle.y + obstacle.height/2) {
+                character.setCollision(1,obstacle.y);
+            }
+            // TOP of Mario
+            if (character.y <= obstacle.y + obstacle.height || (character.x + character.width >= obstacle.x && character.x <= obstacle.x + obstacle.width)
+            && character.y + character.height > obstacle.y + obstacle.height/2) {
+                character.setCollision(2, obstacle.y);
+            }
+            //moving right
+            if (character.x + character.width >= obstacle.x && character.x + character.width < obstacle.x + 8 || (character.y >= obstacle.y + obstacle.height &&
+            character.y + character.height <= obstacle.y)){
+                character.setCollision(3,obstacle.y);
+            }
+            //moving left
+            if(character.x <= obstacle.x + obstacle.width && character.x > obstacle.x - 8 || (character.y > obstacle.y + obstacle.height&&
+                    character.y + character.height < obstacle.y)){
+                character.setCollision(4,obstacle.y);
+            }
+
+        }
+        else {
+            character.setCollision(0,obstacle.y);
         }
     }
 
@@ -231,13 +249,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         Bitmap bmp;
        bmp = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.brick),91,
               91);
-        brick= new Obstacle(bmp, 700, -20);
+        brick= new Obstacle(bmp, 700, -20, 91,91);
     }
 
     public void moveScreenLeft(){
-        brick.xX -= velocity;
-        if(brick.xX <= 0){
-            brick.xX = screenWidth;
+        brick.x -= velocity;
+        if(brick.x <= 0){
+            brick.x = screenWidth;
         }
     }
 

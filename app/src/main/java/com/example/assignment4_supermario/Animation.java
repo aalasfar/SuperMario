@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 public class Animation {
     private Bitmap[] frames;
+    private int character;
     private int currentFrame;
     private long delay;
     private long startTime;
@@ -12,8 +13,9 @@ public class Animation {
     private boolean left;
     private boolean jump;
 
-    public void setFrames(Bitmap[] frames){
+    public void setFrames(Bitmap[] frames, int character){
         this.frames= frames;
+        this.character = character;
         currentFrame = 0;
     }
 
@@ -27,28 +29,69 @@ public class Animation {
 
     public void update(){
         long elapsed = (System.nanoTime()-startTime)/100000;
-        if(right) {
-            if (elapsed > delay) {
-                currentFrame++;
-                startTime = System.nanoTime();
+        if(character == 1 ) {
+            if (right) {
+                if (elapsed > delay) {
+                    currentFrame++;
+                    startTime = System.nanoTime();
+                }
+                if (currentFrame >= 4) {
+                    currentFrame = 1;
+                    played = true;
+                }
             }
-            if (currentFrame >= 4) {
-                currentFrame = 1;
-                played = true;
+            if (left) {
+                if (elapsed > delay) {
+                    currentFrame--;
+                    startTime = System.nanoTime();
+                }
+                if (currentFrame <= 7) {
+                    currentFrame = 10;
+                    played = true;
+                }
+            }
+            if (jump) {
+                if (right) {
+                    currentFrame = 4;
+                }
+                if (left) {
+                    currentFrame = 6;
+                } else {
+                    currentFrame = 4;
+                }
             }
         }
-        if(left) {
-            if (elapsed > delay) {
-                currentFrame--;
-                startTime = System.nanoTime();
+        else if(character == 2){
+            if (right) {
+                if (elapsed > delay) {
+                    currentFrame++;
+                    startTime = System.nanoTime();
+                }
+                if (currentFrame >= 4) {
+                    currentFrame = 1;
+                    played = true;
+                }
             }
-            if (currentFrame <= 7) {
-                currentFrame = 10;
-                played = true;
+            if (left) {
+                if (elapsed > delay) {
+                    currentFrame--;
+                    startTime = System.nanoTime();
+                }
+                if (currentFrame <= 11) {
+                    currentFrame = 13;
+                    played = true;
+                }
             }
-        }
-        if(jump){
-            currentFrame = 4;
+            if (jump) {
+                if (right) {
+                    currentFrame = 5;
+                }
+                if (left) {
+                    currentFrame = 9;
+                } else {
+                    currentFrame = 5;
+                }
+            }
         }
     }
 
