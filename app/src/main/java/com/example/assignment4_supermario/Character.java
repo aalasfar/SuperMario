@@ -212,18 +212,4 @@ public class Character extends Object{
         }
         return tmp;
     }
-
-    /*public void logic(){
-        boolean collision = brick.characterCollide(mario);
-        if(collision){
-            //BOTTOM
-            if(y + smallmarioHeight >= brick.yY + 91){
-                y = brick.yY + 91;
-            }
-            // TOP
-            else if(y <= brick.yY + 91){
-                setJump(false);
-                y = brick.yY - smallmarioHeight;
-            }
-        }*/
 }

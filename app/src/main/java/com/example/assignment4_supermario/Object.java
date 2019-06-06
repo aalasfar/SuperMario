@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 
 public class Object {
-    public static Bitmap brick,floor;
     protected int x;
     protected int y;
     protected int dx;
@@ -42,8 +41,5 @@ public class Object {
         return new Rect(i, j, i + w, j + h);
     }
 
-    public static void init(){
-        brick = Bitmap.createBitmap(brick,0,0,91,91);
-        floor = BitmapFactory.decodeResource(Resources.getSystem(),R.drawable.floor);
-    }
+
 }

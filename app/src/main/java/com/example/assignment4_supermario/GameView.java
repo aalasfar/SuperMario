@@ -15,12 +15,12 @@ import android.graphics.Matrix;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     private Background back;
+    private CreateBitmaps brick,floor;
     private boolean right, left, jump;
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1080;
     public static int gapHeight = 600;
     public static int velocity = 15;
-    public Obstacle brick;
     private Character mario;
     final private int smallmarioWidth = 91;
     final private int smallmarioHeight = 91;
@@ -49,6 +49,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         back = new Background(BitmapFactory.decodeResource(getResources(),R.drawable.background1));
         back.setVector(-5);
         mario = new Character(BitmapFactory.decodeResource(getResources(),R.drawable.smallsprites),smallmarioWidth,smallmarioHeight,11,1);
+        brick = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.brick),0);
+        floor = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.floor),1);
         count = 0;
        // makeLevel();
 
@@ -75,6 +77,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void update(){
         if(mario.getPlaying()) {
             mario.update();
+            //Obstacle.blocks[0].update();
            // Collision(mario,brick)
             if(mario.x >= WIDTH/2 && right ){
                 back.update();
@@ -254,19 +257,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
 
-    public void makeLevel(){
+  /*  public void makeLevel(){
         Bitmap bmp;
-       bmp = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.brick),91,
+        bmp = getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.brick),91,
               91);
-        //brick= new Obstacle(bmp, 700, -2,1 );
-    }
 
-    public void moveScreenLeft(){
+        //brick= new Obstacle(bmp, 700, -2,1 );
+    }*/
+
+    /*public void moveScreenLeft(){
         brick.x -= velocity;
         if(brick.x <= 0){
             brick.x = screenWidth;
         }
-    }
+    }*/
 
    /* public void moveRight(int c){
             //character.x += 40;

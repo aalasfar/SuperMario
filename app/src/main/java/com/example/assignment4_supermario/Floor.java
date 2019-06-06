@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 public class Floor extends Obstacle {
     public Floor(int id) {
-        super(Object.floor, id);
+        super(CreateBitmaps.floor, id);
     }
 
     @Override

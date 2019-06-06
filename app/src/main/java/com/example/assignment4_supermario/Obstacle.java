@@ -7,26 +7,27 @@ import android.graphics.Rect;
 
 public class Obstacle extends Object{
     //static stuff here
-    public static Obstacle[] blocks = new Obstacle[256];
+    public static Obstacle[] blocks = new Obstacle[10];
     public static Obstacle brick = new Brick(0);
     public static Obstacle floor = new Floor(1);
 
     //class
     private boolean playing;
     public static final int BLOCKWIDTH = 91, BLOCKHEIGHT =91;
-    private Bitmap image;
+    protected Bitmap block;
     private int screenHeight = 1080;
     public final int id;
 
-    public Obstacle(Bitmap image,int id){
+    public Obstacle(Bitmap block,int id){
         this.id = id;
-        this.image = image;
+        this.block = block;
 
         blocks[id] = this;
     }
 
-    public void draw(Canvas canvas, int x, int y){
-        canvas.drawBitmap(image,x,y,null);
+    public void draw(Canvas canvas, int i, int j){
+        System.out.println("brick should be drawn");
+        canvas.drawBitmap(block,i,j,null);
     }
     public void update(){
         //update anything
