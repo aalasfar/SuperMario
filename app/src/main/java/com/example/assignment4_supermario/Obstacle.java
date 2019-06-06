@@ -16,7 +16,7 @@ public class Obstacle extends Object{
         width = w;
         height = h;
         this.x = x;
-        this.y = y + screenHeight/2 +250;
+        this.y = y + screenHeight/2 +350;
     }
 
     public void draw(Canvas canvas){
@@ -35,9 +35,9 @@ public class Obstacle extends Object{
 
         playing = b;
     }
-    public boolean characterCollide(Character character){
+    public boolean characterCollide(int posx, int posy){
 
-        Rect r1 = getRectangle(character.x, character.y, character.width, character.height);;
+        Rect r1 = getRectangle(posx, posy, 91, 91);;
         Rect r2 = getRectangle(x, y, 91, 91);
 
         if(r2.contains(r1.left,r1.top) || r2.contains(r1.right,r1.top) || r2.contains(r1.left, r1.bottom) || r2.contains(r1.right, r1.bottom)){
