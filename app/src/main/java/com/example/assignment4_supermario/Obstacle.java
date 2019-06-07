@@ -8,8 +8,9 @@ import android.graphics.Rect;
 public class Obstacle extends Object{
     //static stuff here
     public static Obstacle[] blocks = new Obstacle[10];
-    public static Obstacle brick = new Brick(0);
+    public static Obstacle brick = new Brick(2);
     public static Obstacle floor = new Floor(1);
+    public static Obstacle coin = new Coin(3);
 
     //class
     private boolean playing;

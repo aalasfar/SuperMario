@@ -15,7 +15,7 @@ import android.graphics.Matrix;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     private Background back;
-    private CreateBitmaps brick,floor;
+    private CreateBitmaps brick,floor, coin;
     private boolean right, left, jump;
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1080;
@@ -47,11 +47,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
         thread.setRunning(true);
         thread.start();
-        back = new Background(BitmapFactory.decodeResource(getResources(),R.drawable.background1));
+        back = new Background(BitmapFactory.decodeResource(getResources(),R.drawable.background2));
         back.setVector(-5);
         mario = new Character(BitmapFactory.decodeResource(getResources(),R.drawable.smallsprites),smallmarioWidth,smallmarioHeight,11,1);
-        brick = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.brick),0);
+        brick = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.brick),2);
         floor = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.floor),1);
+        coin = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.coin),3);
         count = 0;
         world = new World(CreateBitmaps.floor);
        // makeLevel();
