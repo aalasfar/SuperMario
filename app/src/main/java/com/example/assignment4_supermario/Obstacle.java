@@ -26,7 +26,6 @@ public class Obstacle extends Object{
     }
 
     public void draw(Canvas canvas, int i, int j){
-        System.out.println("brick should be drawn");
         canvas.drawBitmap(block,i,j,null);
     }
     public void update(){

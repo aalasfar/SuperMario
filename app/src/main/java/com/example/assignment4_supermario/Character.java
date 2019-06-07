@@ -19,7 +19,7 @@ public class Character extends Object{
     private int collision, dya;
     private Animation animation = new Animation();
     private int futx, futy; //used for predicting x and y
-    private int position = 200;
+    private int position = 261;
     private int screenHeight = 1080;
 
     public Character(Bitmap bmp,int w, int h, int numFrames, int character){

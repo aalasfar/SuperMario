@@ -22,6 +22,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public static int gapHeight = 600;
     public static int velocity = 15;
     private Character mario;
+    private World world;
     final private int smallmarioWidth = 91;
     final private int smallmarioHeight = 91;
     final private int bigmarioWidth = 100;
@@ -52,6 +53,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         brick = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.brick),0);
         floor = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.floor),1);
         count = 0;
+        world = new World(CreateBitmaps.floor);
        // makeLevel();
 
     }
@@ -81,6 +83,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
            // Collision(mario,brick)
             if(mario.x >= WIDTH/2 && right ){
                 back.update();
+                world.update();
                 //brick.update();
             }
         }
@@ -91,9 +94,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         if(canvas != null){
           back.draw(canvas);
+          world.draw(canvas);
           mario.draw(canvas);
-          Obstacle.blocks[1].draw(canvas,91,91);
-
         }
     }
 
