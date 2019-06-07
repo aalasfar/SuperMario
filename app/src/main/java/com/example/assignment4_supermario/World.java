@@ -24,9 +24,12 @@ public class World {
     public void draw(Canvas canvas){
         for(int x = 0; x < width; x++){
             for(int y = height - 1; y > height - 3; y--) {
-                getObstacle(x, y).draw(canvas, x * Obstacle.BLOCKWIDTH + xX, y * Obstacle.BLOCKHEIGHT);
-                if (xX >= -GameView.WIDTH && xX < 0) {
-                    getObstacle(x, y).draw(canvas, x * Obstacle.BLOCKWIDTH + GameView.WIDTH + xX, y * Obstacle.BLOCKHEIGHT);
+                Obstacle m = getObstacle(x, y);
+                if (!(m == null)) {
+                    getObstacle(x, y).draw(canvas, x * Obstacle.BLOCKWIDTH + xX, y * Obstacle.BLOCKHEIGHT);
+                    if (xX >= -GameView.WIDTH && xX < 0) {
+                        getObstacle(x, y).draw(canvas, x * Obstacle.BLOCKWIDTH + GameView.WIDTH + xX, y * Obstacle.BLOCKHEIGHT);
+                    }
                 }
             }
         }
@@ -34,9 +37,9 @@ public class World {
 
     public Obstacle getObstacle(int x, int y){
         Obstacle t = Obstacle.blocks[block[x][y]];
-        if (t == null){
+        if(t == null){   return null;}
+
             return Obstacle.brick;
-        }   return Obstacle.floor;
     }
     private void loadWorld(Bitmap level){
         //width of screen is 22

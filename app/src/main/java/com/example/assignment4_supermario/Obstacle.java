@@ -47,20 +47,14 @@ public class Obstacle extends Object{
 
         playing = b;
     }
-    public boolean characterCollide(int posx, int posy){
+    public void characterCollide(Character character){
 
-        Rect r1 = getRectangle(posx, posy, 91, 91);
-        Rect r2 = getRectangle(x, y, 91, 91);
+        Rect r1 = getRectangle(character.x, character.y, character.width, character.height);
+        Rect r2 = getRectangle(x, y, width, height);
 
-        if(r2.contains(r1.left,r1.top) || r2.contains(r1.right,r1.top) || r2.contains(r1.left, r1.bottom) || r2.contains(r1.right, r1.bottom)){
-            return true;
-        }
-//                if(r2.contains(r1.left,r1.top) || r2.contains(r1.right,r1.top)){
-//                    return 1;
-//                }
-//                if(r2.contains(r1.left, r1.bottom) || r2.contains(r1.right, r1.bottom)){
-//                    return 2;
-//                }
-        return false;
+//        if(r2.contains(r1.left,r1.top) || r2.contains(r1.right,r1.top) || r2.contains(r1.left, r1.bottom) || r2.contains(r1.right, r1.bottom)){
+//
+//        }
+
     }
 }

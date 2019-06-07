@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -81,7 +82,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(mario.getPlaying()) {
             mario.update();
             //Obstacle.blocks[0].update();
-           // Collision(mario,brick)
+           Collision(mario,Obstacle.blocks[1]);
             if(mario.x >= WIDTH/2 && right ){
                 back.update();
                 world.update();
@@ -220,43 +221,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }*/
 
 
-    public void Collision(Character character, Obstacle obstacle){
-        int futy , futx;
-        futy = character.getFutY(character.y);
-        futx = character.getFutX(character.x);
-        boolean collision = obstacle.characterCollide(futx, futy);
-        if(collision) {
-            //BOTTOM of Mario
-            if (futy + character.height >= obstacle.y + obstacle.height || (futx + character.width >= obstacle.x && futx <= obstacle.x + obstacle.width)
-            && futy < obstacle.y + obstacle.height/2) {
-                character.setCollision(1,obstacle.y);
-            }
-            // TOP of Mario
-            if ((futy <= obstacle.y + obstacle.height || (futx + character.width >= obstacle.x && futx <= obstacle.x + obstacle.width))
-           && futy + character.height > obstacle.y + obstacle.height/2) {
-                character.setCollision(2, obstacle.y);
-            }
+    public void Collision(Character c, Obstacle o){
+        Rect r1 = c.getRectangle(c.x, c.y, c.width, c.height);
+        Rect r2 = o.getRectangle(x, y, o.width, o.height);
 
-            /*if(futy + character.height >= obstacle.y && futy + character.height <= obstacle.y + 10 &&
-                    (futx + character.width >= obstacle.x && futx + character.width <= obstacle.x + 10)
-                    || (futx >= obstacle.x+obstacle.width - 10 && futx <= obstacle.x+obstacle.width)){
-                character.setCollision(2, obstacle.y);
-            }*/
-            //moving right
-            if (futx + character.width >= obstacle.x && futx + character.width < obstacle.x + 10 || (futy >= obstacle.y + obstacle.height &&
-            futy + character.height <= obstacle.y)){
-                character.setCollision(3,obstacle.y);
+        if(right){
+            if(r2.contains(r1.top,r1.right) && r2.contains(r1.bottom,r1.right)){
+                c.x = o.x - c.width;
             }
-            //moving left
-            if(futx <= obstacle.x + obstacle.width && futx > obstacle.x - 10 || (futy > obstacle.y + obstacle.height&&
-                    futy + character.height < obstacle.y)){
-                character.setCollision(4,obstacle.y);
-            }
+        }
+        if(left){
 
         }
-        else {
-            character.setCollision(0,obstacle.y);
-        }
+
     }
 
 
@@ -289,3 +266,43 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }*/
 }
+/*
+public void Collision(Character character, Obstacle obstacle){
+        int futy , futx;
+        futy = character.getFutY(character.y);
+        futx = character.getFutX(character.x);
+        boolean collision = obstacle.characterCollide(futx, futy);
+        if(collision) {
+            //BOTTOM of Mario
+            if (futy + character.height >= obstacle.y + obstacle.height || (futx + character.width >= obstacle.x && futx <= obstacle.x + obstacle.width)
+            && futy < obstacle.y + obstacle.height/2) {
+                character.setCollision(1,obstacle.y);
+            }
+            // TOP of Mario
+            if ((futy <= obstacle.y + obstacle.height || (futx + character.width >= obstacle.x && futx <= obstacle.x + obstacle.width))
+           && futy + character.height > obstacle.y + obstacle.height/2) {
+                character.setCollision(2, obstacle.y);
+            }
+
+            /*if(futy + character.height >= obstacle.y && futy + character.height <= obstacle.y + 10 &&
+                    (futx + character.width >= obstacle.x && futx + character.width <= obstacle.x + 10)
+                    || (futx >= obstacle.x+obstacle.width - 10 && futx <= obstacle.x+obstacle.width)){
+                character.setCollision(2, obstacle.y);
+            }*/
+//moving right
+         /*   if (futx + character.width >= obstacle.x && futx + character.width < obstacle.x + 10 || (futy >= obstacle.y + obstacle.height &&
+        futy + character.height <= obstacle.y)){
+        character.setCollision(3,obstacle.y);
+        }
+        //moving left
+        if(futx <= obstacle.x + obstacle.width && futx > obstacle.x - 10 || (futy > obstacle.y + obstacle.height&&
+        futy + character.height < obstacle.y)){
+        character.setCollision(4,obstacle.y);
+        }
+
+        }
+        else {
+        character.setCollision(0,obstacle.y);
+        }
+        }
+ */
