@@ -4,7 +4,12 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.support.constraint.solver.widgets.Rectangle;
+
 public class Character extends Object{
     private Bitmap sprite;
     private int character;
@@ -19,21 +24,24 @@ public class Character extends Object{
     private int collision, dya;
     private Animation animation = new Animation();
     private int futx, futy; //used for predicting x and y
-    private int position = 261;
+    private int position = 270;
     private int screenHeight = 1080;
+    protected Rect bounds;
+    protected Handler handler;
 
-    public Character(Bitmap bmp,int w, int h, int numFrames, int character){
+    public Character(Handler handler, Bitmap bmp,int w, int h, int numFrames, int character){
         x = 100;
+        this.handler = handler;
         collision = 0;
         this.character = character;
         y = screenHeight - position;
         dy = 0;
         dya = 0;
-        height=h;
+        height = h;
         width = w;
         Bitmap[] image = new Bitmap[numFrames];
         sprite = bmp;
-
+        bounds = new Rect(x,y,x+width,y+height);
         for(int i =0; i < numFrames; i++ ){
             image[i] = Bitmap.createBitmap(sprite, i*width, 0, width,height);
         }
@@ -90,19 +98,34 @@ public class Character extends Object{
             System.out.println(collision);
         }
     public void draw(Canvas canvas){
-            canvas.drawBitmap(animation.getImage(), x, y, null);
+        Paint paint = new Paint();
+        paint.setColor(Color.RED);
+        bounds.left = x;
+        bounds.top = y;
+        bounds.right = x+width;
+        bounds.bottom = y+height;
+        canvas.drawRect(bounds,paint);
+        canvas.drawBitmap(animation.getImage(), x, y, null);
     }
 
     public void update(){
         // here we can make mario move by himself
         animation.update();
         if(right){
-            dx = (int)(dxa+= 1);
             futx = getFutX(x);
-            if(dx > rightSpeed){
-                dx =rightSpeed;
-            }
-            if (futx > 960|| collision == 3){
+            int tx = (x + width) / Obstacle.BLOCKWIDTH;
+
+           if(!collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT)
+                   && !collisionwithTile(tx,((y + height -1)/Obstacle.BLOCKHEIGHT))){
+                System.out.println("moving right");
+                dx = (int)(dxa+= 1);
+                if(dx > rightSpeed){
+                    dx =rightSpeed;
+                }
+                if (futx > 960){
+                    dx = 0;
+                }
+                x +=dx;
                 dx = 0;
             }
         }
@@ -112,12 +135,12 @@ public class Character extends Object{
             if (dx < leftSpeed){
                 dx =leftSpeed;
             }
-            if (futx <= 0 || collision == 4){
+            if (futx <= 0){
                 dx =0;
             }
+            x +=dx;
+            dx = 0;
         }
-        x +=dx;
-        dx = 0;
         if(jump) {
             if (collision == 0 ) {
                 dy = (int) ((upSpeed * t) + (0.5 * gravity * t * t));
@@ -173,8 +196,49 @@ public class Character extends Object{
             dy =0;
 
         }
+    }
+
+    public void moveX(){
+        if(right){
+            int tx = (int) (x+ (dxa+=1) + bounds.top + bounds.right) / Obstacle.BLOCKWIDTH;
+            //if(!collisionwithTile(tx,(y+bounds.top)/Obstacle.BLOCKHEIGHT)){
+                dx = (int)(dxa+= 1);
+                futx = getFutX(x);
+                if(dx > rightSpeed){
+                    dx =rightSpeed;
+                }
+                if (futx > 960|| collision == 3){
+                    dx = 0;
+                }
+            //}
+        }
+        else if (left){
+            dx =(int)(dxa-= 1);
+            futx = getFutX(x);
+            if (dx < leftSpeed){
+                dx =leftSpeed;
+            }
+            if (futx <= 0 || collision == 4){
+                dx =0;
+            }
+        }
+        x +=dx;
+        dx = 0;
+    }
+
+    public void moveY(){
 
     }
+
+    protected boolean collisionwithTile(int x, int y){
+        Obstacle check = handler.getWorld().getObstacle(x,y);
+        if (check == null)
+            return false;
+        else {
+            return handler.getWorld().getObstacle(x, y).isSolid();
+        }
+    }
+
     public boolean getPlaying(){
         setDown(true);
         return playing;

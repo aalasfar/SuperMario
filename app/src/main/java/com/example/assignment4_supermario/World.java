@@ -26,7 +26,7 @@ public class World {
         for(int x = 0; x < width; x++){
             for(int y = height - 1; y > height - 11; y--) {
                 Obstacle m = getObstacle(x,y);
-                if(!(m== null)){
+                if(!(m == null)){
                     getObstacle(x, y).draw(canvas, x * Obstacle.BLOCKWIDTH + xX, y * Obstacle.BLOCKHEIGHT);
 
                     if (xX >= -GameView.WIDTH && xX < 0) {
@@ -62,7 +62,7 @@ public class World {
                 block[x][y] = 1;
             }
         }
-        block[10][7]=2;
+        block[9][9]=2;
         block[11][7]=2;
         block[12][7]=2;
         block[13][7]=2;
@@ -71,5 +71,9 @@ public class World {
         block[11][5]=3;
         block[12][5]=3;
 
+    }
+
+    public int[][] getArray(){
+        return block;
     }
 }
