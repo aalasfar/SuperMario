@@ -95,13 +95,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(mario.getPlaying()) {
             mario.update();
             //Obstacle.blocks[0].update();
-            int[][] array;
-            array = world.getArray();
-            for(int i = 0; i > 110; i++){
-                for (int j =0; j > 22; j++ ){
-                    Collision(mario,Obstacle.blocks[array[i][j]]);
-                }
-            }
             if(mario.x >= WIDTH/2 && right ){
                 back.update();
                 world.update();
@@ -195,7 +188,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     mario.resetDXA();
                 }
                 else if(jump){
+
                     jump = false;
+
                 }
             case MotionEvent.ACTION_POINTER_UP:
             case MotionEvent.ACTION_CANCEL: {
@@ -230,43 +225,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     /*********** logic for checking collision *******/
-    public void Collision(Character c, Obstacle o){
-        Rect r1 = c.getRectangle(c.x, c.y, c.width, c.height);
-        Rect r2 = o.getRectangle(o.x, o.y, o.width, o.height);
-        System.out.println(o.x);
 
-        if(right){
-            if(r2.contains(r1.top,r1.right) && r2.contains(r1.bottom,r1.right)){
-                c.x = o.x - c.width;
-                c.setCollision(3,o.y);
-            }
-        }
-        if(left){
 
-        }
 
-    }
-
-    /*public void moveScreenLeft(){
-        brick.x -= velocity;
-        if(brick.x <= 0){
-            brick.x = screenWidth;
-        }
-    }*/
-
-   /* public void moveRight(int c){
-            //character.x += 40;
-        if(c % 2 != 0){ mario = character[1];}
-        else{ mario = character[2];}
-
-        mario.walk();
-            if(mario.x >= screenWidth/2 - 200){
-            moveScreenLeft();
-            mario.x = screenWidth/2 - 200;
-
-            count++;
-        }
-    }*/
 }
 /*
 public void Collision(Character character, Obstacle obstacle){
