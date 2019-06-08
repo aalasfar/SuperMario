@@ -13,6 +13,8 @@ public class GameCamera {
         xOffset += xAmt;
     }
 
+
+    /*************** ABDUL *************************/
     public float getxOffset() {
         return xOffset;
     }
@@ -22,6 +24,6 @@ public class GameCamera {
     }
     public void centerOfCharacter(Character c){
         xOffset = c.x - game.WIDTH / 2;
-        System.out.println(xOffset);
+       // System.out.println(xOffset);
     }
 }

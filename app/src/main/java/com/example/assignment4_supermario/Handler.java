@@ -6,12 +6,20 @@ public class Handler{
 
     private GameView game;
     private World world;
+
+
     public Handler(GameView game) {
         this.game = game;
     }
+
+    public GameCamera getGameCamera(){
+        return game.getGameCamera();
+    }
+
     public int getWidth(){
         return game.getWidth();
     }
+
     public int getHeight(){
         return game.getHeight();
     }

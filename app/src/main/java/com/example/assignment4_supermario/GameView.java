@@ -32,10 +32,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private CreateBitmaps brick,floor, coin;
     private Character mario;
     private World world;
-    private Handler handler;
 
     //Camera
     private GameCamera gameCamera;
+
+    //Handler
+    private Handler handler;
 
     public GameView(Context context){
         super(context);
@@ -49,17 +51,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         thread.setRunning(true);
         thread.start();
         handler = new Handler(this);
+        count = 0;
+
+        world = new World(CreateBitmaps.floor, handler);
+        handler.setWorld(world);
+
         back = new Background(BitmapFactory.decodeResource(getResources(),R.drawable.background));
         back.setVector(-5);
         mario = new Character(handler,BitmapFactory.decodeResource(getResources(),R.drawable.smallsprites),smallmarioWidth,smallmarioHeight,11,1);
         brick = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.brick),2);
         floor = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.floor),1);
         coin = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.coin),3);
-        count = 0;
-        world = new World(CreateBitmaps.floor, this);
-        handler.setWorld(world);
 
+
+        // GameCamera and Handler
         gameCamera = new GameCamera(0); //initialize its lcoation
+        handler = new Handler(this);
+
         getGameCamera().move(0);
 
 

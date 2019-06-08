@@ -109,75 +109,55 @@ public class Character extends Object{
         bounds.bottom = y+height;
         canvas.drawRect(bounds,paint);
         canvas.drawBitmap(animation.getImage(), x, y, null);
-        //canvas.drawBitmap(animation.getImage(), (int)(x - game.getGameCamera().getxOffset()), y, null);
+
+//        bounds.left = x - (int) (handler.getGameCamera().getxOffset());
+//        bounds.top = y;
+//        bounds.right = x+width - (int) (handler.getGameCamera().getxOffset());
+//        bounds.bottom = y+height;
+//        canvas.drawRect(bounds,paint);
+//        canvas.drawBitmap(animation.getImage(), (int)(x - handler.getGameCamera().getxOffset()), y, null);
+       // System.out.println(handler.getGameCamera().getxOffset()+"   "+x);
 
     }
 
     public void update(){
         // here we can make mario move by himself
         animation.update();
-        if(right){
-            futx = getFutX(x);
-           // int tx = (x + width) / Obstacle.BLOCKWIDTH;
-            int tx = (x + width) / Obstacle.BLOCKWIDTH;
-
-           if(!collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT)
-                   && !collisionwithTile(tx,((y + height -1)/Obstacle.BLOCKHEIGHT))){
-                dx = (int)(dxa+= 1);
-                if(dx > rightSpeed){
-                    dx =rightSpeed;
-                }
-                if (futx > 960){
-                    dx = 0;
-                }
-                x +=dx;
-                dx = 0;
-            }
-        }
-        if(left){
-            dx =(int)(dxa-= 1);
-            futx = getFutX(x);
-            if (dx < leftSpeed){
-                dx =leftSpeed;
-            }
-            if (futx <= 0){
-                dx =0;
-            }
-            x +=dx;
-            dx = 0;
-        }
+        if(right){  moveRight(); }
+        if(left){   moveLeft(); }
         if(jump) {
-            if (collision == 0 ) {
-                dy = (int) ((upSpeed * t) + (0.5 * gravity * t * t));
-                futy = getFutY(y);
-                if (futy > screenHeight - position) {
-                    dy = 0;
-                    y = screenHeight - position;
-                    t = 0;
-                    jump = false;
-                    down = true;
-                    animation.setFrame(0);
-                    animation.setJump(false);
-                }
-            }
-            else if (collision == 2) {
-                dy = 0;
-                y = dya - height;
-                t = 0;
-                jump = false;
-                down = true;
-                animation.setFrame(0);
-                animation.setJump(false);
-            }
-            else if(collision == 1 ){
-                dy = 0;
-                t = 0;
-                jump =false;
-                down = true;
-            }
-            t += 0.1;
-            y -= dy;
-            dy =0;
+            moveUp();
+//            if (collision == 0 ) {
+//                dy = (int) ((upSpeed * t) + (0.5 * gravity * t * t));
+//                futy = getFutY(y);
+//                if (futy > screenHeight - position) {
+//                    dy = 0;
+//                    y = screenHeight - position;
+//                    t = 0;
+//                    jump = false;
+//                    down = true;
+//                    animation.setFrame(0);
+//                    animation.setJump(false);
+//                }
+//            }
+//            else if (collision == 2) {
+//                dy = 0;
+//                y = dya - height;
+//                t = 0;
+//                jump = false;
+//                down = true;
+//                animation.setFrame(0);
+//                animation.setJump(false);
+//            }
+//            else if(collision == 1 ){
+//                dy = 0;
+//                t = 0;
+//                jump =false;
+//                down = true;
+//            }
+//            t += 0.1;
+//            y -= dy;
+//            dy =0;
         }
         if(down){
             if(collision == 0) {
@@ -206,35 +186,78 @@ public class Character extends Object{
         /******************/
     }
 
-    public void moveX(){
-        if(right){
-            int tx = (int) (x+ (dxa+=1) + bounds.top + bounds.right) / Obstacle.BLOCKWIDTH;
-            //if(!collisionwithTile(tx,(y+bounds.top)/Obstacle.BLOCKHEIGHT)){
+    public void moveRight(){
+            futx = getFutX(x);
+            // int tx = (x + width) / Obstacle.BLOCKWIDTH;
+            int tx = (int)(x+ handler.getGameCamera().getxOffset() +width) / Obstacle.BLOCKWIDTH;
+
+            if(!collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT)
+                    && !collisionwithTile(tx,((y + height -1)/Obstacle.BLOCKHEIGHT))){
                 dx = (int)(dxa+= 1);
-                futx = getFutX(x);
                 if(dx > rightSpeed){
                     dx =rightSpeed;
                 }
-                if (futx > 960|| collision == 3){
+                if (futx > 960){
                     dx = 0;
                 }
-            //}
-        }
-        else if (left){
-            dx =(int)(dxa-= 1);
-            futx = getFutX(x);
-            if (dx < leftSpeed){
-                dx =leftSpeed;
+                x +=dx;
+//                dx = 0;
             }
-            if (futx <= 0 || collision == 4){
-                dx =0;
-            }
-        }
-        x +=dx;
-        dx = 0;
     }
 
-    public void moveY(){
+    public void moveLeft(){
+        futx = getFutX(x);
+        int tx = (int)(x+ handler.getGameCamera().getxOffset()) / Obstacle.BLOCKWIDTH;
+        if(!collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT)
+                && !collisionwithTile(tx,((y + height -1)/Obstacle.BLOCKHEIGHT))){
+            dx =(int)(dxa-= 1);
+        }
+        if (dx < leftSpeed){
+            dx =leftSpeed;
+        }
+        if (futx <= 0){
+            dx =0;
+        }
+        x +=dx;
+       // dx = 0;
+    }
+
+    public void moveUp(){
+        if (collision == 0 ) {
+            int ty = y / Obstacle.BLOCKHEIGHT;
+            if(!collisionwithTile((x + width + (int)(handler.getGameCamera().getxOffset()))/Obstacle.BLOCKWIDTH,ty)
+                    && !collisionwithTile((x + width + (int)(handler.getGameCamera().getxOffset() -1))/Obstacle.BLOCKWIDTH,ty)) {
+                dy = (int) ((upSpeed * t) + (0.5 * gravity * t * t));
+            }
+            futy = getFutY(y);
+            if (futy > screenHeight - position) {
+                dy = 0;
+                y = screenHeight - position;
+                t = 0;
+                jump = false;
+                down = true;
+                animation.setFrame(0);
+                animation.setJump(false);
+            }
+        }
+        else if (collision == 2) {
+            dy = 0;
+            y = dya - height;
+            t = 0;
+            jump = false;
+            down = true;
+            animation.setFrame(0);
+            animation.setJump(false);
+        }
+        else if(collision == 1 ){
+            dy = 0;
+            t = 0;
+            jump =false;
+            down = true;
+        }
+        t += 0.1;
+        y -= dy;
+        dy =0;
 
     }
 
@@ -285,6 +308,7 @@ public class Character extends Object{
         return tmp;
     }
 
+    /************* ABDUL *************/
     public int xStart(){
         return (int) (cam.getxOffset()/Obstacle.BLOCKWIDTH);
     }
