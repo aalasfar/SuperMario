@@ -4,21 +4,30 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 public class World {
+    private Handler handler;
     private int width, height;
     private int[][] block;
-    private int xX;
+    private int xX = Obstacle.BLOCKWIDTH;
     private int z;
+    private GameView game;
 
-    public World(Bitmap level){
+
+    public World(Bitmap level, GameView game){
+        //this.handler = handler;
+        this.game = game;
         loadWorld(level);
 
     }
 
     public void update(){
-        xX -= 5;
-        if(xX < -GameView.WIDTH){
-            //   xX = 0;
-        }
+//        xX -= 5;
+//        if(xX < -GameView.WIDTH){
+//            //   xX = 0;
+//        }
+       // if(game.getGameCamera().getxOffset()>=91){
+
+        //}
+        shiftArray();
     }
 
     public void draw(Canvas canvas){
@@ -27,12 +36,13 @@ public class World {
             for(int y = height - 1; y > height - 11; y--) {
                 Obstacle m = getObstacle(x,y);
                 if(!(m == null)){
-                    getObstacle(x, y).draw(canvas, x * Obstacle.BLOCKWIDTH + xX, y * Obstacle.BLOCKHEIGHT);
+//                    getObstacle(x, y).draw(canvas, (int) (x * Obstacle.BLOCKWIDTH), y * Obstacle.BLOCKHEIGHT);
+                    getObstacle(x, y).draw(canvas, (int) (x * Obstacle.BLOCKWIDTH - game.getGameCamera().getxOffset()), (int) (y * Obstacle.BLOCKHEIGHT));
 
-                    if (xX >= -GameView.WIDTH && xX < 0) {
-
-                        getObstacle(x, y).draw(canvas, x * Obstacle.BLOCKWIDTH + GameView.WIDTH + xX, y * Obstacle.BLOCKHEIGHT);
-                    }
+//                    if (xX >= -GameView.WIDTH && xX < 0) {
+//
+//                        getObstacle(x, y).draw(canvas, x * Obstacle.BLOCKWIDTH + GameView.WIDTH + xX, y * Obstacle.BLOCKHEIGHT);
+//                    }
                 }
             }
         }
@@ -75,5 +85,23 @@ public class World {
 
     public int[][] getArray(){
         return block;
+    }
+
+    public void shiftArray() {
+        int xShift = (int) (game.getGameCamera().getxOffset());
+        //xShift = xShift/ (int) (game.getGameCamera().getxOffset());
+        xX++;
+        System.out.println(xX);
+
+        if(xX > 2*Obstacle.BLOCKWIDTH){
+        //if (xShift / Obstacle.BLOCKWIDTH > 0) {
+        System.out.println(xX);
+        xX = Obstacle.BLOCKWIDTH;
+            for (int i = 0; i < width - 1; i++) {
+                for (int j = 0; j < height; j++) {
+                    block[i][j] = block[i+ 1][j];
+                }
+            }
+        }
     }
 }

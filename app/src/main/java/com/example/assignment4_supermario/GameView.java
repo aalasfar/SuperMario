@@ -14,15 +14,9 @@ import android.graphics.Matrix;
 
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
-    private MainThread thread;
-    private Background back;
-    private CreateBitmaps brick,floor, coin;
     private boolean right, left, jump;
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1080;
-    private Character mario;
-    private World world;
-    private Handler handler;
     final private int smallmarioWidth = 91;
     final private int smallmarioHeight = 91;
     final private int bigmarioWidth = 100;
@@ -32,9 +26,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
     public int x, y, count;
 
+    //Objects
+    private MainThread thread;
+    private Background back;
+    private CreateBitmaps brick,floor, coin;
+    private Character mario;
+    private World world;
+    private Handler handler;
 
-
-
+    //Camera
+    private GameCamera gameCamera;
 
     public GameView(Context context){
         super(context);
@@ -55,8 +56,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         floor = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.floor),1);
         coin = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.coin),3);
         count = 0;
-        world = new World(CreateBitmaps.floor);
+        world = new World(CreateBitmaps.floor, this);
         handler.setWorld(world);
+
+        gameCamera = new GameCamera(0); //initialize its lcoation
+        getGameCamera().move(0);
+
 
     }
 
@@ -92,7 +97,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             if(mario.x >= WIDTH/2 && right ){
                 back.update();
                 world.update();
-                //brick.update();
+                getGameCamera().move(5);
             }
         }
     }
@@ -194,6 +199,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         return super.onTouchEvent(event);
     }
+    /********************************************/
+    public GameCamera getGameCamera(){
+        return gameCamera;
+    }
+
+    /********************************************/
 
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight){
         int width = bm.getWidth();

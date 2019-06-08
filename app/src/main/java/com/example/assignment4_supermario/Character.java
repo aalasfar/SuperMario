@@ -26,8 +26,11 @@ public class Character extends Object{
     private int futx, futy; //used for predicting x and y
     private int position = 270;
     private int screenHeight = 1080;
+
     protected Rect bounds;
     protected Handler handler;
+    private GameCamera cam;
+    private GameView game;
 
     public Character(Handler handler, Bitmap bmp,int w, int h, int numFrames, int character){
         x = 100;
@@ -106,6 +109,8 @@ public class Character extends Object{
         bounds.bottom = y+height;
         canvas.drawRect(bounds,paint);
         canvas.drawBitmap(animation.getImage(), x, y, null);
+        //canvas.drawBitmap(animation.getImage(), (int)(x - game.getGameCamera().getxOffset()), y, null);
+
     }
 
     public void update(){
@@ -113,11 +118,11 @@ public class Character extends Object{
         animation.update();
         if(right){
             futx = getFutX(x);
+           // int tx = (x + width) / Obstacle.BLOCKWIDTH;
             int tx = (x + width) / Obstacle.BLOCKWIDTH;
 
            if(!collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT)
                    && !collisionwithTile(tx,((y + height -1)/Obstacle.BLOCKHEIGHT))){
-                System.out.println("moving right");
                 dx = (int)(dxa+= 1);
                 if(dx > rightSpeed){
                     dx =rightSpeed;
@@ -196,6 +201,9 @@ public class Character extends Object{
             dy =0;
 
         }
+        /******************/
+        //cam.centerOfCharacter(this);
+        /******************/
     }
 
     public void moveX(){
@@ -276,4 +284,9 @@ public class Character extends Object{
         }
         return tmp;
     }
+
+    public int xStart(){
+        return (int) (cam.getxOffset()/Obstacle.BLOCKWIDTH);
+    }
+
 }
