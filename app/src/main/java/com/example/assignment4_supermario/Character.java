@@ -54,10 +54,10 @@ public class Character extends Object{
     }
     public void setRight(boolean b){
         if(!b) {
-            if (character == 1) {
+            if (character == 1 || character == 3) {
                 animation.setFrame(0);
             }
-            else if(character == 2){
+            else if(character == 2 || character == 4){
                 animation.setFrame(0);
             }
             animation.setRight(false);
@@ -69,10 +69,10 @@ public class Character extends Object{
 
     public void setLeft(boolean b){
         if(!b){
-            if(character == 1) {
+            if(character == 1 || character == 3) {
                 animation.setFrame(10);
             }
-            else if (character ==2 ){
+            else if (character ==2 || character == 4 ){
                 animation.setFrame(9);
             }
             animation.setLeft(false);
@@ -134,23 +134,31 @@ public class Character extends Object{
             if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 4
                     || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 4){
                 if(character ==1){
-                handler.getGame().setMario(2,x,y);}
+                handler.getGame().setMario(2,x,y);
+                }
+                if(character == 3){
+                    handler.getGame().setMario(4,x,y);
+                }
                 handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
                 handler.setScore(1000);
-                handler.setLives();
+                handler.setScore(1000);
             }
             if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 3
                     || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 3){
                 handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
                 handler.setScore(200);
-                handler.setLives();
 
             }
             if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 5
                     || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 5){
                 handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
+                if(character == 1){
+                    handler.getGame().setMario(3,x,y);
+                }
+                else if (character == 2){
+                    handler.getGame().setMario(4,x,y);
+                }
                 handler.setScore(1000);
-                handler.setLives();
 
             }
         }
@@ -197,8 +205,8 @@ public class Character extends Object{
                 int ty1 = y / Obstacle.BLOCKHEIGHT;
                 if ((collisionwithTile((x + 3 +(int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1)> 2
                         || collisionwithTile((x + (width-3) + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty1)>2) ||
-                        collisionwithTile((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1)== 0
-                        && collisionwithTile((x + (width-3) + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty1)==0) {
+                        (collisionwithTile((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1)== 0
+                        && collisionwithTile((x + (width-3) + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty1)==0)) {
                     dy = (int) ((upSpeed * t) + (0.5 * gravity * t * t));
                     y -= dy;
                     dy = 0;
@@ -209,6 +217,17 @@ public class Character extends Object{
                     down= true;
                     //animation.setFrame(0);
                     animation.setJump(false);
+                    System.out.println("hit block");
+                    System.out.println(ty1);
+                    if(character == 2 || character == 4) {
+                        if (collisionwithTile((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1) == 2) {
+                            System.out.println("hit block");
+                            handler.getWorld().editArray((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1, 0);
+                        } else if (collisionwithTile((x + (width - 3) + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty1) == 2) {
+                            System.out.println("hit block");
+                            handler.getWorld().editArray((x + (width - 3) + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1, 0);
+                        }
+                    }
                 }
             //}
             //else if (t > 1.6 && t <8 ) {
@@ -222,7 +241,6 @@ public class Character extends Object{
                     dy = 0;
                 }
                 else {
-                System.out.println(ty2);
                 if (ty2 >= 10) {
                     y = ty2 * Obstacle.BLOCKHEIGHT - height - 1;
                 }
@@ -319,6 +337,9 @@ public class Character extends Object{
     /************* ABDUL *************/
     public int xStart(){
         return (int) (cam.getxOffset()/Obstacle.BLOCKWIDTH);
+    }
+    public int getCharacter(){
+        return character;
     }
 
 }

@@ -29,7 +29,7 @@ public class Animation {
 
     public void update(){
         long elapsed = (System.nanoTime()-startTime)/100000;
-        if(character == 1 ) {
+        if(character == 1 || character == 3) {
             if (right) {
                 if (elapsed > delay) {
                     currentFrame++;
@@ -61,7 +61,7 @@ public class Animation {
                 }
             }
         }
-        else if(character == 2){
+        else if(character == 2 || character == 4){
             if (right) {
                 if (elapsed > delay) {
                     currentFrame++;

@@ -40,7 +40,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     private Background back;
     private CreateBitmaps brick,floor, coin, supermushroom, starman;
-    private Character mario, smallmario,bigmario;
+    private Character mario, smallmario,bigmario,bstarmario, starmario;
     private World world;
 
     //Camera
@@ -227,11 +227,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         else if(type == 2){
             mario = bigmario;
         }
+        else if(type == 3){
+            mario = starmario;
+        }
+        else if(type == 4){
+            mario = bstarmario;
+        }
     }
     public void setMario(int type, int x, int y) {
         if(initial) {
             smallmario = new Character(handler, BitmapFactory.decodeResource(getResources(), R.drawable.smallsprites), x, y, smallmarioWidth, smallmarioHeight, 11, 1);
             bigmario = new Character(handler, BitmapFactory.decodeResource(getResources(), R.drawable.bigsprites), x, y - smallmarioHeight, bigmarioWidth, bigmarioHeight, 10, 2);
+            bstarmario = new Character(handler, BitmapFactory.decodeResource(getResources(), R.drawable.bigstarsprites), x, y - smallmarioHeight, bigmarioWidth, bigmarioHeight, 10, 4);
+            starmario = new Character(handler, BitmapFactory.decodeResource(getResources(), R.drawable.smallstarsprites), x, y, smallmarioWidth, smallmarioHeight, 11, 3);
             initial = false;
         }
         if (type == 1 && !initial){
@@ -250,11 +258,29 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             smallmario.setJump(false);
             smallmario.setLeft(false);
         }
+        else if(type == 3 && ! initial){
+            starmario.x = x;
+            starmario.y = y;
+            smallmario.setRight(false);
+            smallmario.setDown(false);
+            smallmario.setJump(false);
+            smallmario.setLeft(false);
+        }
+        if (type == 4 && !initial){
+            if(mario.getCharacter() == 3){
+                bstarmario.x = x;
+                bstarmario.y = y - smallmarioHeight;
+            }
+            else if(mario.getCharacter() == 2) {
+                bstarmario.x = x;
+                bstarmario.y = y;
+            }
+            bigmario.setRight(false);
+            bigmario.setDown(false);
+            bigmario.setJump(false);
+            bigmario.setLeft(false);
+        }
         SuperMario(type);
-    }
-
-    public void StarMario(int type){
-
     }
     public void setBitmaps(){
         brick = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.brick),2);
