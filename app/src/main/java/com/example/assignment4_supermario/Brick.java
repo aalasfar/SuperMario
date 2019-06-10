@@ -7,7 +7,7 @@ public class Brick extends Obstacle {
     }
 
     @Override
-    public boolean isSolid(){
-        return true;
+    public int isSolid(){
+        return 2;
     }
 }

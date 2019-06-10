@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class CreateBitmaps {
-    public static Bitmap brick,floor,coin;
+    public static Bitmap brick,floor,coin, supermushroom, starman;
     private int id;
 
 
@@ -19,6 +19,12 @@ public class CreateBitmaps {
         }
         else if(id == 3){
             coin = image;
+        }
+        else if(id == 4){
+            supermushroom = image;
+        }
+        else if(id == 5){
+            starman = image;
         }
     }
 }

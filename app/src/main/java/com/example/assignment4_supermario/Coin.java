@@ -7,7 +7,7 @@ public class Coin extends Obstacle {
 
     }
     @Override
-    public boolean isSolid(){
-        return false;
+    public int isSolid(){
+        return 3;
     }
 }

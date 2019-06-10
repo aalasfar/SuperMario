@@ -16,15 +16,15 @@ public class Character extends Object{
     private double dxa;
     private int leftSpeed = -8;
     private int rightSpeed = 8;
-    private int upSpeed = 18;
+    private int upSpeed = 15;
     private double gravity = -9.8;
     private double t = 0.0;
     private boolean left, right, jump, down;
     private boolean playing;
-    private int collision;
+    private boolean collision;
     private Animation animation = new Animation();
     private int futx, futy; //used for predicting x and y
-    private int position = 300;
+    private int position = 400;
     private int screenHeight = 1080;
 
     protected Rect bounds;
@@ -32,12 +32,11 @@ public class Character extends Object{
     private GameCamera cam;
     private GameView game;
 
-    public Character(Handler handler, Bitmap bmp,int w, int h, int numFrames, int character){
-        x = 100;
+    public Character(Handler handler, Bitmap bmp,int x, int y, int w, int h, int numFrames, int character){
+        this.x= x;
         this.handler = handler;
-        collision = 0;
         this.character = character;
-        y = screenHeight - position;
+        this.y = y;
         dy = 0;
         height = h;
         width = w;
@@ -54,8 +53,13 @@ public class Character extends Object{
 
     }
     public void setRight(boolean b){
-        if(!b){
-            animation.setFrame(0);
+        if(!b) {
+            if (character == 1) {
+                animation.setFrame(0);
+            }
+            else if(character == 2){
+                animation.setFrame(0);
+            }
             animation.setRight(false);
         }
         else if(b){
@@ -69,7 +73,7 @@ public class Character extends Object{
                 animation.setFrame(10);
             }
             else if (character ==2 ){
-                animation.setFrame(14);
+                animation.setFrame(9);
             }
             animation.setLeft(false);
         }
@@ -117,15 +121,16 @@ public class Character extends Object{
     public void update(){
         // here we can make mario move by himself
         animation.update();
+
         if(right){
             //moveRight();
-            int tx = (int)(x+ handler.getGameCamera().getxOffset() +width) / Obstacle.BLOCKWIDTH;
-
-            if(!collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT)
-                    && !collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT))){
+            futx = getFutX(x);
+            int tx = (int)(futx+ handler.getGameCamera().getxOffset() +width) / Obstacle.BLOCKWIDTH;
+            if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 0
+                    && collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 0){
                 dx = (int)(dxa+= 1);
                 if(dx > rightSpeed){
-                    dx =rightSpeed;
+                    dx = rightSpeed;
                 }
                 if (x > 960){
                     dx = 0;
@@ -133,118 +138,108 @@ public class Character extends Object{
                 x +=dx;
                 dx = 0;
             }
+            else {
+                handler.getGame().setMario(2,x,y);
+            }
+            /*futy = getFutY(y);
+            int ty = (futy + height) / Obstacle.BLOCKHEIGHT;
+            if (!collisionwithTile((x + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty)
+                    && !collisionwithTile((x + width + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty)){
+                down = true;
+            }*/
         }
         if(left){
            // moveLeft();
-            int tx = (int)(x+ handler.getGameCamera().getxOffset()) / Obstacle.BLOCKWIDTH;
-            if(!collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT)
-                    && !collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT))){
+            futx = getFutX(x);
+            int tx = (int)(futx+ handler.getGameCamera().getxOffset()) / Obstacle.BLOCKWIDTH;
+            if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 0
+                    && collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 0){
                 dx =(int)(dxa-= 1);
+                if (dx < leftSpeed){
+                    dx = leftSpeed;
+                }
+                if (x <= 0){
+                    dx =0;
+                }
+                x +=dx;
+                dx = 0;
             }
-            if (dx < leftSpeed){
-                dx =leftSpeed;
+            else {
+                handler.getGame().setMario(1,x,y);
             }
-            if (x <= 0){
-                dx =0;
-            }
-            x +=dx;
-            dx = 0;
-
+            /*futy = getFutY(y);
+            int ty = (futy + height) / Obstacle.BLOCKHEIGHT;
+            if (!collisionwithTile((x + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty)
+                    && !collisionwithTile((x + width + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty)){
+                down = true;
+            }*/
         }
         if(jump) {
            // moveUp();
-            t += 0.1;
-            if(t > 0 && t < 1.8) {
-                int ty = y / Obstacle.BLOCKHEIGHT;
-                System.out.println("between 0 and 1.8");
-                if (!collisionwithTile((x + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty)
-                        && !collisionwithTile((x + width + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty)) {
+            t+=.1;
+            futy = getFutY(y);
+            //if (t > 0 && t < 1.6) {
+                int ty1 = y / Obstacle.BLOCKHEIGHT;
+                if (collisionwithTile((x + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1)== 0
+                        && collisionwithTile((x + width + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty1)==0) {
                     dy = (int) ((upSpeed * t) + (0.5 * gravity * t * t));
-                    System.out.println(t);
                     y -= dy;
                     dy = 0;
-
-                }
-            }
-            else if (t > 1.9 && t <3 ){
-                int ty = y + height/ Obstacle.BLOCKHEIGHT;
-                System.out.println("between 1.8 and 3");
-                if(!collisionwithTile((x + (int)(handler.getGameCamera().getxOffset()))/Obstacle.BLOCKWIDTH,ty)
-                        && !collisionwithTile((x + width + (int)(handler.getGameCamera().getxOffset() -1))/Obstacle.BLOCKWIDTH,ty)){
-                    dy = (int) ((upSpeed * t) + (0.5 * gravity * t * t));
-                    System.out.println(t);
-                    y -= dy;
-                    dy = 0;
-                }
-                else{
-                    System.out.println("stop");
+                } else {
+                    t = 0;
+                    //y = ty1 * Obstacle.BLOCKHEIGHT + Obstacle.BLOCKHEIGHT;
                     jump = false;
+                    down= true;
+                    //animation.setFrame(0);
+                    animation.setJump(false);
+                }
+            //}
+            //else if (t > 1.6 && t <8 ) {
+                int ty2 = (futy + height) / Obstacle.BLOCKHEIGHT;
+                if (collisionwithTile((x + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty2) == 0
+                        && collisionwithTile((x + width + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty2) == 0) {
+                    dy = (int) ((upSpeed * t) + (0.5 * gravity * t * t));
+                    y -= dy;
+                    dy = 0;
+                }
+                else {
+                    y = ty2 * Obstacle.BLOCKHEIGHT - height - 1;
+                    t =0;
                     animation.setFrame(0);
                     animation.setJump(false);
-
+                    down = false;
+                    jump =false;
                 }
-
-
+            //}
+            if ( t > 8){
+                t = 0;
+                jump = false;
+                animation.setFrame(0);
+                animation.setJump(false);
             }
-//            if (collision == 0 ) {
-//                dy = (int) ((upSpeed * t) + (0.5 * gravity * t * t));
-//                futy = getFutY(y);
-//                if (futy > screenHeight - position) {
-//                    dy = 0;
-//                    y = screenHeight - position;
-//                    t = 0;
-//                    jump = false;
-//                    down = true;
-//                    animation.setFrame(0);
-//                    animation.setJump(false);
-//                }
-//            }
-//            else if (collision == 2) {
-//                dy = 0;
-//                y = dya - height;
-//                t = 0;
-//                jump = false;
-//                down = true;
-//                animation.setFrame(0);
-//                animation.setJump(false);
-//            }
-//            else if(collision == 1 ){
-//                dy = 0;
-//                t = 0;
-//                jump =false;
-//                down = true;
-//            }
-//            t += 0.1;
-//            y -= dy;
-//            dy =0;
         }
         if(down){
-            System.out.println("inside down");
-            int ty = y + height/ Obstacle.BLOCKHEIGHT;
-            System.out.println(ty);
-            if(!collisionwithTile((x + (int)(handler.getGameCamera().getxOffset()))/Obstacle.BLOCKWIDTH,ty)
-                    && !collisionwithTile((x + width + (int)(handler.getGameCamera().getxOffset() -1))/Obstacle.BLOCKWIDTH,ty)){
-                System.out.println("Checking");
-                futy = getFutY(y);
+            futy = getFutY(y);
+            int ty = (futy + height)/ Obstacle.BLOCKHEIGHT;
+            if(collisionwithTile((x + (int)(handler.getGameCamera().getxOffset()))/Obstacle.BLOCKWIDTH,ty) == 0
+                    && collisionwithTile((x + width + (int)(handler.getGameCamera().getxOffset() -1))/Obstacle.BLOCKWIDTH,ty) == 0){
                 dy = (int) (0.5 * gravity * t * t);
-                if (futy > screenHeight - position) {
-                    dy = 0;
-                    y = screenHeight - position;
-                    t = 0;
-                    down = false;
-                    animation.setFrame(0);
-                    animation.setJump(false);
-                }
-
                 t += 0.2;
                 y -= dy;
                 dy = 0;
             }
             else{
+                if(!right || !left) {
+                    y = ty * Obstacle.BLOCKHEIGHT - height - 1;
+                }
+               // y = ty * Obstacle.BLOCKHEIGHT - height -1;
                 t =0;
-                down = false;
                 animation.setFrame(0);
                 animation.setJump(false);
+                down = false;
+                jump =false;
+                //animation.setFrame(0);
+                //animation.setJump(false);
             }
 
         }
@@ -252,43 +247,10 @@ public class Character extends Object{
         //cam.centerOfCharacter(this);
         /******************/
     }
-
-    public void moveDown(){
-        int ty = y - height/ Obstacle.BLOCKHEIGHT;
-
-        if( !collisionwithTile((x + (int)(handler.getGameCamera().getxOffset()))/Obstacle.BLOCKWIDTH,ty)
-                && !collisionwithTile((x + width + (int)(handler.getGameCamera().getxOffset() -1))/Obstacle.BLOCKWIDTH,ty)) {
-            dy = (int) ((upSpeed * t) + (0.5 * gravity * t * t));
-            futy = getFutY(y);
-            System.out.println(dy);
-            System.out.println(t);
-            if (futy > screenHeight - position) {
-                dy = 0;
-                y = screenHeight - position;
-                t = 0;
-                down = false;
-                animation.setFrame(0);
-                animation.setJump(false);
-            }
-            t += 0.1;
-            y -= dy;
-            dy = 0;
-        }
-        else{
-            t =0;
-            down = false;
-            animation.setFrame(0);
-            animation.setJump(false);
-        }
-
-
-    }
-
-
-    protected boolean collisionwithTile(int x, int y){
+    protected int collisionwithTile(int x, int y){
         Obstacle check = handler.getWorld().getObstacle(x,y);
         if (check == null)
-            return false;
+            return 0;
         else {
             return handler.getWorld().getObstacle(x, y).isSolid();
         }
@@ -298,6 +260,9 @@ public class Character extends Object{
         return playing;
     }
     public void setPlaying(boolean b){
+        if(!animation.playedOnce()) {
+            setDown(true);
+        }
         playing = b;
     }
     public void resetDXA(){
@@ -320,14 +285,10 @@ public class Character extends Object{
     public int getFutY(int num) {
          int tmp = num;
          int tmpy = 0;
-        if(jump) {
-            tmpy = (int) ((upSpeed * t) + (0.5 * gravity * t * t));
-            tmp -= tmpy;
-        }
-        if(down){
-            tmpy = (int) (0.5 * gravity * t * t);
-            tmp -= tmpy;
-        }
+         double tmpt = t + .01;
+         tmpy = (int) ((upSpeed * tmpt) + (0.5 * gravity * tmpt * tmpt));
+         tmp -= tmpy;
+
         return tmp;
     }
 

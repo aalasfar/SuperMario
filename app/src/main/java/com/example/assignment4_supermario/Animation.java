@@ -77,19 +77,19 @@ public class Animation {
                     currentFrame--;
                     startTime = System.nanoTime();
                 }
-                if (currentFrame <= 11) {
-                    currentFrame = 13;
+                if (currentFrame <= 5) {
+                    currentFrame = 8;
                     played = true;
                 }
             }
             if (jump) {
                 if (right) {
-                    currentFrame = 5;
+                    currentFrame = 4;
                 }
                 if (left) {
-                    currentFrame = 9;
-                } else {
                     currentFrame = 5;
+                } else {
+                    currentFrame = 4;
                 }
             }
         }

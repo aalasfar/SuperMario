@@ -37,7 +37,7 @@ public class World {
         // the same thing could be done for y but we dont need it cuz y doesnt change
 
         for (int x = xStart; x < xEnd; x++) {
-            for (int y = height - 1; y > height - 11; y--) {
+            for (int y = height-1; y > height - 13; y--) {
                 Obstacle m = getObstacle(x, y);
                 if (!(m == null)) {
 //                    getObstacle(x, y).draw(canvas, (int) (x * Obstacle.BLOCKWIDTH), y * Obstacle.BLOCKHEIGHT);
@@ -60,6 +60,10 @@ public class World {
             return Obstacle.floor;
         } else if (t == Obstacle.coin) {
             return Obstacle.coin;
+        }else if (t == Obstacle.supermushroom) {
+            return Obstacle.supermushroom;
+        }else if (t == Obstacle.starman) {
+            return Obstacle.starman;
         }
         return null;
     }
@@ -71,19 +75,14 @@ public class World {
         block = new int[width][height];
         //setting floor
         for (int x = 0; x < width; x++) {
-            for (int y = height - 1; y > height - 3; y--) {
+            for (int y = height - 1; y > height -3; y--) {
                 block[x][y] = 1;
             }
         }
-        block[10][9] = 2;
-        block[11][7] = 2;
-        block[12][7] = 2;
-        block[13][7] = 2;
-        block[11][4] = 2;
-        block[12][4] = 2;
-        block[11][5] = 3;
-        block[12][5] = 3;
-
+        block[6][9] = 5;
+        block[7][9]=3;
+        block[8][9]=4;
+        block[9][5] = 2;
     }
 
 

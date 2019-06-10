@@ -7,10 +7,12 @@ import android.graphics.Rect;
 
 public class Obstacle extends Object{
     //static stuff here
-    public static Obstacle[] blocks = new Obstacle[4];
+    public static Obstacle[] blocks = new Obstacle[10];
     public static Obstacle brick = new Brick(2);
     public static Obstacle floor = new Floor(1);
     public static Obstacle coin = new Coin(3);
+    public static Obstacle supermushroom = new Supermushroom(4);
+    public static Obstacle starman = new Starman(5);
 
     //class
     private boolean playing;
@@ -41,8 +43,8 @@ public class Obstacle extends Object{
         }
     }
 
-    public boolean isSolid(){
-        return false;
+    public int isSolid(){
+        return 0;
     }
 
     public void setPlaying(boolean b){
@@ -55,16 +57,5 @@ public class Obstacle extends Object{
     }
     public void setY(int y){
         this.y = y;
-    }
-
-    public void characterCollide(Character character){
-
-        Rect r1 = getRectangle(character.x, character.y, character.width, character.height);
-        Rect r2 = getRectangle(x, y, width, height);
-
-//        if(r2.contains(r1.left,r1.top) || r2.contains(r1.right,r1.top) || r2.contains(r1.left, r1.bottom) || r2.contains(r1.right, r1.bottom)){
-//
-//        }
-
     }
 }

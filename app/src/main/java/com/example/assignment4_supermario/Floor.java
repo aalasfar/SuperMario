@@ -8,7 +8,7 @@ public class Floor extends Obstacle {
     }
 
     @Override
-    public boolean isSolid(){
-        return true;
+    public int isSolid(){
+        return 1;
     }
 }
