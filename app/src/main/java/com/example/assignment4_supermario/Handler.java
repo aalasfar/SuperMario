@@ -2,7 +2,7 @@ package com.example.assignment4_supermario;
 
 import android.content.Context;
 
-public class Handler{
+public class Handler {
 
     private GameView game;
     private World world;
@@ -12,15 +12,15 @@ public class Handler{
         this.game = game;
     }
 
-    public GameCamera getGameCamera(){
+    public GameCamera getGameCamera() {
         return game.getGameCamera();
     }
 
-    public int getWidth(){
+    public int getWidth() {
         return game.getWidth();
     }
 
-    public int getHeight(){
+    public int getHeight() {
         return game.getHeight();
     }
 
@@ -38,5 +38,12 @@ public class Handler{
 
     public void setGame(GameView game) {
         this.game = game;
+    }
+
+    public void setScore(int x) {
+        game.score += x;
+    }
+    public void setLives(){
+        game.lives -= 1;
     }
 }

@@ -5,6 +5,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -27,6 +29,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
     public int x, y, count;
+
+    public long score = 0;
+    public int lives = 3;
 
     //Objects
     private MainThread thread;
@@ -110,6 +115,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
           back.draw(canvas);
           world.draw(canvas);
           mario.draw(canvas);
+          displayScore(canvas);
+
         }
     }
 
@@ -252,4 +259,36 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     /********************************************/
+
+    public void displayScore(Canvas canvas){
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(60);
+        canvas.drawText("SCORE " + score,1520, 70, paint);
+
+        paint = new Paint();
+        paint.setColor(Color.RED);
+        paint.setTextSize(60);
+        canvas.drawText("LIVES " + lives, 120, 70, paint);
+
+        if(lives <= 0){
+            displayGameOver(canvas);
+        }
+    }
+
+    public void displayGameOver(Canvas canvas){
+//            canvas = holder.lockCanvas();
+//            canvas.drawARGB(255, 0, 0, 0);
+            Paint paint2 = new Paint();
+            paint2.setColor(Color.BLACK);
+            paint2.setTextSize(140);
+            canvas.drawText("Game Over!", 500, 300, paint2);
+            paint2.setTextSize(100);
+            canvas.drawText("Score "+score, 500, 800, paint2);
+//            gameOver = 0;
+            score = 0;
+            lives = 3;
+//            holder.unlockCanvasAndPost(grid);
+
+        }
 }

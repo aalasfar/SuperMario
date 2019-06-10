@@ -136,14 +136,22 @@ public class Character extends Object{
                 if(character ==1){
                 handler.getGame().setMario(2,x,y);}
                 handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
+                handler.setScore(1000);
+                handler.setLives();
             }
             if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 3
                     || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 3){
                 handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
+                handler.setScore(200);
+                handler.setLives();
+
             }
             if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 5
                     || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 5){
                 handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
+                handler.setScore(1000);
+                handler.setLives();
+
             }
         }
         if(left){
@@ -169,14 +177,17 @@ public class Character extends Object{
                 if(character ==1){
                     handler.getGame().setMario(2,x,y);}
                 handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
+                handler.setScore(1000);
             }
             if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 3
                     || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 3){
                 handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
+                handler.setScore(200);
             }
             if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 5
                     || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 5){
                 handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
+                handler.setScore(1000);
             }
         }
         if(jump) {
