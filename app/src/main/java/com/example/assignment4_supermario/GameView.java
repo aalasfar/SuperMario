@@ -1,6 +1,7 @@
 package com.example.assignment4_supermario;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,8 @@ import android.graphics.Matrix;
 
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
+    private GameOverActivity gameOver;
+
     private boolean right, left, jump;
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1080;
@@ -90,6 +93,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 e.printStackTrace();
             }
             retry = false;
+
+            surfaceCreated(holder);
         }
     }
     public void update(){
@@ -104,6 +109,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 back.update();
                 world.update();
                 getGameCamera().move(5);
+
+                if(lives <= 0){
+                    lives = 3;
+//                    surfaceDestroyed(getHolder());
+                }
             }
         }
     }
@@ -271,24 +281,33 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         paint.setTextSize(60);
         canvas.drawText("LIVES " + lives, 120, 70, paint);
 
+
+        /**********************************************************/
         if(lives <= 0){
-            displayGameOver(canvas);
+            lives = 0;
+//            displayGameOver(canvas);
+
+            Intent startIntent = new Intent(gameOver.getApplicationContext(),GameOverActivity.class);
+            //how to pass info to second screen
+            gameOver.startActivity(startIntent);
         }
+        /***********************************************************/
     }
 
-    public void displayGameOver(Canvas canvas){
-//            canvas = holder.lockCanvas();
-//            canvas.drawARGB(255, 0, 0, 0);
-            Paint paint2 = new Paint();
-            paint2.setColor(Color.BLACK);
-            paint2.setTextSize(140);
-            canvas.drawText("Game Over!", 500, 300, paint2);
-            paint2.setTextSize(100);
-            canvas.drawText("Score "+score, 500, 800, paint2);
-//            gameOver = 0;
-            score = 0;
-            lives = 3;
-//            holder.unlockCanvasAndPost(grid);
-
-        }
+//    public void displayGameOver(Canvas canvas){
+////            canvas = holder.lockCanvas();
+////            canvas.drawARGB(255, 0, 0, 0
+////            surfaceDestroyed(getHolder());
+//            Paint paint2 = new Paint();
+//            paint2.setColor(Color.BLACK);
+//            paint2.setTextSize(140);
+//            canvas.drawText("Game Over!", 500, 300, paint2);
+//            paint2.setTextSize(100);
+//            canvas.drawText("Score "+score, 500, 800, paint2);
+////            gameOver = 0;
+////            score = 0;
+//
+////            holder.unlockCanvasAndPost(grid);
+//
+//        }
 }
