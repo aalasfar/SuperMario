@@ -28,7 +28,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     final private int bigmarioHeight = 181;
     boolean initial = true;
     boolean start = true;
-    private long starttime;
+    private long starttime,endtime,deltatime;
 
     private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
@@ -63,6 +63,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         thread.start();
         handler = new Handler(this);
         count = 0;
+        starttime =0;
+        endtime=0;
+        deltatime =0;
         world = new World(CreateBitmaps.floor, handler);
         handler.setWorld(world);
         back = new Background(BitmapFactory.decodeResource(getResources(),R.drawable.background));
@@ -371,6 +374,31 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             gameOver.startActivity(startIntent);
         }
         /***********************************************************/
+    }
+    public void startClock(int time){
+        deltatime = 0;
+        if(time == 1) {
+            starttime = System.currentTimeMillis();
+            endtime = 0;
+            deltatime = 0;
+        }
+        else{
+            endtime = System.currentTimeMillis();
+            deltatime = endtime - starttime;
+        }
+        deltatime = endtime - starttime;
+        starMario();
+    }
+
+    public void starMario() {
+        if (deltatime / 1000 >= 20) {
+            if (mario.getCharacter() == 3) {
+                setMario(1, mario.x, mario.y);
+            } else if (mario.getCharacter() == 4) {
+                setMario(2, mario.x, mario.y);
+
+            }
+        }
     }
 
 //    public void displayGameOver(Canvas canvas){

@@ -27,7 +27,8 @@ public class Character extends Object{
     private int position = 400;
     private int screenHeight = 1080;
     private long starttime;
-    private long delay;
+    private long endtime;
+    private long deltatime;
 
     protected Rect bounds;
     protected Handler handler;
@@ -39,8 +40,10 @@ public class Character extends Object{
         this.handler = handler;
         this.character = character;
         this.y = y;
-        delay = 20000;
+        endtime = 0;
         starttime = 0;
+        deltatime = 0;
+        handler.getGame().startClock(1);
         dy = 0;
         height = h;
         width = w;
@@ -116,7 +119,7 @@ public class Character extends Object{
     public void update(){
         // here we can make mario move by himself
         animation.update();
-        starMario();
+        handler.getGame().startClock(2);
         if(right){
             futx = getFutX(x);
             int tx = (int)(futx+ handler.getGameCamera().getxOffset() +width) / Obstacle.BLOCKWIDTH;
@@ -157,11 +160,11 @@ public class Character extends Object{
                 handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
                 if(character == 1){
                     handler.getGame().setMario(3,x,y);
-                    starMario();
+                    handler.getGame().startClock(1);
                 }
                 else if (character == 2){
                     handler.getGame().setMario(4,x,y);
-                    starMario();
+                    handler.getGame().startClock(1);
                 }
                 handler.setScore(1000);
 
@@ -348,19 +351,31 @@ public class Character extends Object{
     public int getCharacter(){
         return character;
     }
-
-    public void starMario(){
-        long elapsed = (System.nanoTime()- starttime)/ 100000;
-            if (elapsed > delay){
-                if(character == 3){
-                    handler.getGame().setMario(1,x,y);
-                    starttime = System.nanoTime();
-                }
-                else if (character == 4){
-                    handler.getGame().setMario(2,x,y);
-                    starttime = System.nanoTime();
-                }
-            }
+    /*public void startClock(int time){
+        deltatime = 0;
+        if(time == 1) {
+            starttime = System.currentTimeMillis();
+            endtime = 0;
+            deltatime = 0;
+        }
+        else{
+            endtime = System.currentTimeMillis();
+            deltatime = endtime - starttime;
+        }
+        deltatime = endtime - starttime;
+        System.out.println(deltatime/1000);
+            starMario();
     }
+
+    public void starMario() {
+        if (deltatime / 1000 >= 10) {
+            if (character == 3) {
+                handler.getGame().setMario(1, x, y);
+            } else if (character == 4) {
+                handler.getGame().setMario(2, x, y);
+
+            }
+        }
+    }*/
 
 }
