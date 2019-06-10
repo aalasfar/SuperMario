@@ -26,6 +26,8 @@ public class Character extends Object{
     private int futx, futy; //used for predicting x and y
     private int position = 400;
     private int screenHeight = 1080;
+    private long starttime;
+    private long delay;
 
     protected Rect bounds;
     protected Handler handler;
@@ -37,6 +39,8 @@ public class Character extends Object{
         this.handler = handler;
         this.character = character;
         this.y = y;
+        delay = 20000;
+        starttime = 0;
         dy = 0;
         height = h;
         width = w;
@@ -112,9 +116,8 @@ public class Character extends Object{
     public void update(){
         // here we can make mario move by himself
         animation.update();
-
+        starMario();
         if(right){
-            //moveRight();
             futx = getFutX(x);
             int tx = (int)(futx+ handler.getGameCamera().getxOffset() +width) / Obstacle.BLOCKWIDTH;
             if((collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 0
@@ -154,9 +157,11 @@ public class Character extends Object{
                 handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
                 if(character == 1){
                     handler.getGame().setMario(3,x,y);
+                    starMario();
                 }
                 else if (character == 2){
                     handler.getGame().setMario(4,x,y);
+                    starMario();
                 }
                 handler.setScore(1000);
 
@@ -223,9 +228,11 @@ public class Character extends Object{
                         if (collisionwithTile((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1) == 2) {
                             System.out.println("hit block");
                             handler.getWorld().editArray((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1, 0);
+                            handler.setScore(10);
                         } else if (collisionwithTile((x + (width - 3) + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty1) == 2) {
                             System.out.println("hit block");
                             handler.getWorld().editArray((x + (width - 3) + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1, 0);
+                            handler.setScore(10);
                         }
                     }
                 }
@@ -340,6 +347,20 @@ public class Character extends Object{
     }
     public int getCharacter(){
         return character;
+    }
+
+    public void starMario(){
+        long elapsed = (System.nanoTime()- starttime)/ 100000;
+            if (elapsed > delay){
+                if(character == 3){
+                    handler.getGame().setMario(1,x,y);
+                    starttime = System.nanoTime();
+                }
+                else if (character == 4){
+                    handler.getGame().setMario(2,x,y);
+                    starttime = System.nanoTime();
+                }
+            }
     }
 
 }
