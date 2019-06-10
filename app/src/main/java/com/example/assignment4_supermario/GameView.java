@@ -40,7 +40,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     //Objects
     private MainThread thread;
     private Background back;
-    private CreateBitmaps brick,floor, coin, supermushroom, starman;
+    private CreateBitmaps brick,floor, coin, supermushroom, starman, goomba,plant;
     private Character mario, smallmario,bigmario,bstarmario, starmario;
     private World world;
 
@@ -344,6 +344,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         coin = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.coin),3);
         supermushroom = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.supermushroom),4);
         starman = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.starman),5);
+        goomba = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.goomba),6);
+        plant = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.plant),7);
     }
     /********************************************/
     public GameCamera getGameCamera(){

@@ -64,7 +64,12 @@ public class World {
             return Obstacle.supermushroom;
         }else if (t == Obstacle.starman) {
             return Obstacle.starman;
+        }else if (t == Obstacle.goomba) {
+            return Obstacle.goomba;
+        }else if (t == Obstacle.plant) {
+            return Obstacle.plant;
         }
+
         return null;
     }
 
@@ -84,6 +89,9 @@ public class World {
         block[8][9]=4;
         block[10][9] = 4;
         block[9][5] = 2;
+        block[11][9] = 6;
+        block[12][9] = 7;
+
     }
 
     public void editArray(int x, int y, int type){

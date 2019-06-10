@@ -13,6 +13,8 @@ public class Obstacle extends Object{
     public static Obstacle coin = new Coin(3);
     public static Obstacle supermushroom = new Supermushroom(4);
     public static Obstacle starman = new Starman(5);
+    public static Obstacle goomba = new Goomba(6);
+    public static Obstacle plant= new Plant(7);
 
     //class
     private boolean playing;
