@@ -82,9 +82,13 @@ public class World {
         block[6][9] = 5;
         block[7][9]=3;
         block[8][9]=4;
+        block[10][9] = 4;
         block[9][5] = 2;
     }
 
+    public void editArray(int x, int y, int type){
+        block[x][y] = type;
+    }
 
     /************************ ABDUL **********************/
     public int[][] getArray() {

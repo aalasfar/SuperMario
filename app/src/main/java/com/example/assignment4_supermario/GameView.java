@@ -22,6 +22,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     final private int bigmarioWidth = 97;
     final private int bigmarioHeight = 181;
     boolean initial = true;
+    boolean start = true;
 
     private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
@@ -87,6 +88,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
     public void update(){
+        if(start) {
+            mario.setPlaying(true);
+            start = false;
+        }
         if(mario.getPlaying()) {
             mario.update();
             //Obstacle.blocks[0].update();
