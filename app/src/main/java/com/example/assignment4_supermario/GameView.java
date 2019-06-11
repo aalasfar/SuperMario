@@ -42,6 +42,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     //Objects
     private MainThread thread;
     private Background back;
+    private Bitmap rightArrow, leftArrow, upArrow;
     private CreateBitmaps brick,floor, coin, supermushroom, starman, goomba,plant,flag;
     private Character mario, smallmario,bigmario,bstarmario, starmario;
     private World world;
@@ -52,6 +53,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     //Handler
     private Handler handler;
+
+
 
     public GameView(Context context){
         super(context);
@@ -82,8 +85,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         // GameCamera and Handler
         gameCamera = new GameCamera(0); //initialize its lcoation
         handler = new Handler(this);
+        rightArrow = BitmapFactory.decodeResource(getResources(),R.drawable.rightarrow);
+        leftArrow = BitmapFactory.decodeResource(getResources(),R.drawable.leftarrow);
+        upArrow =  BitmapFactory.decodeResource(getResources(),R.drawable.uparrow);
 
-        getGameCamera().move(0);
+
+
+       getGameCamera().move(0);
 
 
     }
@@ -138,6 +146,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
           world.draw(canvas);
           mario.draw(canvas);
           displayScore(canvas);
+            canvas.drawBitmap(rightArrow,300,950,null);
+            canvas.drawBitmap(leftArrow,200,950,null);
+            canvas.drawBitmap(upArrow,1500,950, null);
+
 
         }
     }
