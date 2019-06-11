@@ -99,22 +99,53 @@ public class World {
         if(level == 1) {
             block[6][9] = 5;
             block[15][9] = block[16][9] = 0; //empty
-            block[9][9] = block[14][6] = block[18][6] = block[40][7] = 3; //coin
-            block[17][9] = 4; //mushroom
-            block[4][9] = block[40][8] = 4;
-            block[26][7] = block[27][7] = block[70][8]= block[40][9] = 2;
-            block[10][9] =  block[17][9] = block[40][9] = 6;
+            //coin
+            block[9][9] = block[14][6] = block[18][6] = block[40][7] = block[50][8] = 3; //coin
+            block[34][6] = block[37][6] = block[35][6] = block[42][7] = block[60][8] = 3;
+            block[60][7] = block[62][8] = block[64][6] = block[72][6] = block[78][6] = 3;
+            //mushroom
+            block[17][9] = block[4][9] = block[40][8] = 4;
+            //bricks
+            block[26][7] = block[27][7] = block[70][8]= block[40][9] = block[60][7] = 2;
+            //goomba
+            block[10][9] =  block[17][9] = block[40][9] = block[63][9] = 6;
             block[13][9] = block[4][9] = block[70][9] = 7;
         }
         else if(level == 2) {
             block[4][9] = 4;
             block[24][5] = 2;
             block[25][7] = 2;
+            block[6][9] = 5;
+            block[15][9] = block[16][9] = 0; //empty
+            //coin
+            block[9][9] = block[14][6] = block[18][6] = block[40][7] = block[50][8] = 3; //coin
+            block[34][6] = block[37][6] = block[35][6] = block[42][7] = block[60][8] = 3;
+            block[60][7] = block[62][8] = block[64][6] = block[72][6] = block[78][6] = 3;
+            //mushroom
+            block[17][9] = block[4][9] = block[40][8] = 4;
+            //bricks
+            block[26][7] = block[27][7] = block[70][8]= block[40][9] = block[60][7] = 2;
+            //goomba
+            block[10][9] =  block[17][9] = block[40][9] = block[63][9] = 6;
+            block[13][9] = block[4][9] = block[70][9] = 7;
         }
 
         else if(level == 3){
             block[6][9] = 5;
             block[9][9] = 3;
+            block[6][9] = 5;
+            block[15][9] = block[16][9] = 0; //empty
+            //coin
+            block[9][9] = block[14][6] = block[18][6] = block[40][7] = block[50][8] = 3; //coin
+            block[34][6] = block[37][6] = block[35][6] = block[42][7] = block[60][8] = 3;
+            block[60][7] = block[62][8] = block[64][6] = block[72][6] = block[78][6] = 3;
+            //mushroom
+            block[17][9] = block[4][9] = block[40][8] = 4;
+            //bricks
+            block[26][7] = block[27][7] = block[70][8]= block[40][9] = block[60][7] = 2;
+            //goomba
+            block[10][9] =  block[17][9] = block[40][9] = block[63][9] = 6;
+            block[13][9] = block[4][9] = block[70][9] = 7;
 
         }
     }
