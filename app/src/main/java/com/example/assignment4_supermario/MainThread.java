@@ -30,6 +30,7 @@ import android.view.SurfaceHolder;
             int frameCount = 0;
             long targetTime = 1000 / targetFPS;
 
+
             while(running){
                 startTime = System.nanoTime();
                 canvas = null;

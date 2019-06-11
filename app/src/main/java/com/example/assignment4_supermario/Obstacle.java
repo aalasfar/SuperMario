@@ -15,6 +15,7 @@ public class Obstacle extends Object{
     public static Obstacle starman = new Starman(5);
     public static Obstacle goomba = new Goomba(6);
     public static Obstacle plant= new Plant(7);
+    public static Obstacle flag = new Flag(8);
 
     //class
     private boolean playing;

@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.graphics.Matrix;
@@ -36,13 +37,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public long score = 0;
     public int lives = 3;
+    public static int level = 1;
 
     //Objects
     private MainThread thread;
     private Background back;
-    private CreateBitmaps brick,floor, coin, supermushroom, starman, goomba,plant;
+    private CreateBitmaps brick,floor, coin, supermushroom, starman, goomba,plant,flag;
     private Character mario, smallmario,bigmario,bstarmario, starmario;
     private World world;
+    private SurfaceHolder holder;
 
     //Camera
     private GameCamera gameCamera;
@@ -56,6 +59,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         thread = new MainThread(getHolder(),this);
         setFocusable(true);
     }
+    public void setLevel(SurfaceHolder holder){
+        level++;
+
+    }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -66,9 +73,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         starttime =0;
         endtime=0;
         deltatime =0;
-        world = new World(CreateBitmaps.floor, handler);
+        world = new World(CreateBitmaps.floor, handler, level);
         handler.setWorld(world);
-        back = new Background(BitmapFactory.decodeResource(getResources(),R.drawable.background));
+        back = new Background(setLevelMap(level));
         back.setVector(-5);
         setMario(1, 100, 680);
         setBitmaps();
@@ -102,6 +109,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
     public void update(){
+
         if(start) {
             mario.setPlaying(true);
             start = false;
@@ -115,8 +123,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 getGameCamera().move(5);
 
                 if(lives <= 0){
-                    lives = 3;
-//                    surfaceDestroyed(getHolder());
+                    lives = 0;
+                    surfaceDestroyed(getHolder());
                 }
             }
         }
@@ -346,6 +354,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         starman = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.starman),5);
         goomba = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.goomba),6);
         plant = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.plant),7);
+        flag = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.flag),8);
     }
     /********************************************/
     public GameCamera getGameCamera(){
@@ -393,7 +402,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void starMario() {
-        if (deltatime / 1000 >= 20) {
+        if (deltatime / 1000 >= 15) {
             if (mario.getCharacter() == 3) {
                 setMario(1, mario.x, mario.y);
             } else if (mario.getCharacter() == 4) {
@@ -401,6 +410,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
             }
         }
+    }
+
+    public Bitmap setLevelMap(int type){
+        if(type == 1){
+            return BitmapFactory.decodeResource(getResources(), R.drawable.background);
+        }
+        else if(type == 2){
+            return BitmapFactory.decodeResource(getResources(),R.drawable.background2);
+        }
+            return BitmapFactory.decodeResource(getResources(), R.drawable.background3);
     }
 
 //    public void displayGameOver(Canvas canvas){

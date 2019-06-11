@@ -2,12 +2,14 @@ package com.example.assignment4_supermario;
 
 import android.graphics.Bitmap;
 
-public class Plant extends Obstacle{
-    public Plant(int id) {
-        super(CreateBitmaps.plant, id);
+public class Flag extends Obstacle {
+    public Flag(int id) {
+        super(CreateBitmaps.flag,id);
     }
+
     @Override
     public int isSolid(){
-        return 7;
+        return 8;
     }
+
 }
