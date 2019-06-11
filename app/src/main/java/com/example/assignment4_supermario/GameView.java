@@ -1,5 +1,6 @@
 package com.example.assignment4_supermario;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -8,18 +9,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.view.MotionEvent;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.graphics.Matrix;
+
 
 
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private GameOverActivity gameOver;
-
+    private SuperMario activity = new SuperMario();
     private boolean right, left, jump;
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1080;
@@ -45,7 +44,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap rightArrow, leftArrow, upArrow;
     private CreateBitmaps brick,floor, coin, supermushroom, starman, goomba,plant,flag;
     private Character mario, smallmario,bigmario,bstarmario, starmario;
-    private World world;
+    private World world1,world2,world3;
     private SurfaceHolder holder;
 
     //Camera
@@ -62,13 +61,37 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         thread = new MainThread(getHolder(),this);
         setFocusable(true);
     }
-    public void setLevel(SurfaceHolder holder){
+    public void setLevel(){
         level++;
-
+        if(level == 1){
+            handler.setWorld(world1);
+            setMario(1, 100, 680);
+            back = new Background(setLevelMap(level));
+            back.setVector(-5);
+            gameCamera = new GameCamera(0); //initialize its lcoation
+            getGameCamera().move(0);
+        }
+        if(level == 2){
+            handler.setWorld(world2);
+            setMario(1, 100, 680);
+            back = new Background(setLevelMap(level));
+            back.setVector(-5);
+            gameCamera = new GameCamera(0); //initialize its lcoation
+            getGameCamera().move(0);
+        }
+        if(level == 3){
+            handler.setWorld(world3);
+            setMario(1, 100, 680);
+            back = new Background(setLevelMap(level));
+            back.setVector(-5);
+            gameCamera = new GameCamera(0); //initialize its lcoation
+            getGameCamera().move(0);
+        }
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        thread = new MainThread(getHolder(),this);
         thread.setRunning(true);
         thread.start();
         handler = new Handler(this);
@@ -76,24 +99,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         starttime =0;
         endtime=0;
         deltatime =0;
-        world = new World(CreateBitmaps.floor, handler, level);
-        handler.setWorld(world);
+        world1 = new World(handler, 1);
+        world2 = new World(handler, 2);
+        world3 = new World(handler, 3);
+        handler.setWorld(world1);
         back = new Background(setLevelMap(level));
         back.setVector(-5);
         setMario(1, 100, 680);
         setBitmaps();
         // GameCamera and Handler
         gameCamera = new GameCamera(0); //initialize its lcoation
-        handler = new Handler(this);
         rightArrow = BitmapFactory.decodeResource(getResources(),R.drawable.rightarrow);
         leftArrow = BitmapFactory.decodeResource(getResources(),R.drawable.leftarrow);
         upArrow =  BitmapFactory.decodeResource(getResources(),R.drawable.uparrow);
-
-
-
        getGameCamera().move(0);
-
-
     }
 
     @Override
@@ -112,9 +131,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 e.printStackTrace();
             }
             retry = false;
-
-            surfaceCreated(holder);
         }
+
     }
     public void update(){
 
@@ -127,13 +145,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             //Obstacle.blocks[0].update();
             if(mario.x >= WIDTH/2 && right ){
                 back.update();
-                world.update();
                 getGameCamera().move(5);
-
-                if(lives <= 0){
-                    lives = 0;
-                    surfaceDestroyed(getHolder());
-                }
+            }
+            if(lives <= 0){
+                lives = 0;
+              //  surfaceDestroyed(getHolder());
             }
         }
     }
@@ -143,7 +159,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         if(canvas != null){
           back.draw(canvas);
-          world.draw(canvas);
+          if(level == 1) {
+              world1.draw(canvas);
+          }
+          if(level == 2) {
+              world2.draw(canvas);
+          }
+          if(level == 3) {
+              world3.draw(canvas);
+          }
+          if(level == 4){
+              displayGameOver(canvas);
+          }
           mario.draw(canvas);
           displayScore(canvas);
             canvas.drawBitmap(rightArrow,300,950,null);
@@ -390,8 +417,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         /**********************************************************/
         if(lives <= 0){
             lives = 0;
-//            displayGameOver(canvas);
-
+            displayGameOver(canvas);
             Intent startIntent = new Intent(gameOver.getApplicationContext(),GameOverActivity.class);
             //how to pass info to second screen
             gameOver.startActivity(startIntent);
@@ -434,20 +460,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             return BitmapFactory.decodeResource(getResources(), R.drawable.background3);
     }
 
-//    public void displayGameOver(Canvas canvas){
-////            canvas = holder.lockCanvas();
-////            canvas.drawARGB(255, 0, 0, 0
-////            surfaceDestroyed(getHolder());
-//            Paint paint2 = new Paint();
-//            paint2.setColor(Color.BLACK);
-//            paint2.setTextSize(140);
-//            canvas.drawText("Game Over!", 500, 300, paint2);
-//            paint2.setTextSize(100);
-//            canvas.drawText("Score "+score, 500, 800, paint2);
-////            gameOver = 0;
-////            score = 0;
-//
-////            holder.unlockCanvasAndPost(grid);
-//
-//        }
+    public void displayGameOver(Canvas canvas){
+            canvas.drawARGB(255, 0, 0, 0);
+            Paint paint2 = new Paint();
+           paint2.setColor(Color.BLACK);
+            paint2.setTextSize(140);
+           canvas.drawText("Game Over!", 500, 300, paint2);
+            paint2.setTextSize(100);
+            canvas.drawText("Score "+score, 500, 800, paint2);
+            score = 0;
+        }
 }

@@ -36,8 +36,6 @@ public class Character extends Object{
     protected Rect bounds;
     protected Handler handler;
     private GameCamera cam;
-    private GameView game;
-    private SurfaceHolder holder;
 
     public Character(Handler handler, Bitmap bmp,int x, int y, int w, int h, int numFrames, int character){
         this.x= x;
@@ -153,17 +151,17 @@ public class Character extends Object{
                 if(character == 3){
                     handler.getGame().setMario(4,x,y);
                 }
-                System.out.println(tx);
-                System.out.println((y+height)/Obstacle.BLOCKHEIGHT);
                 handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
                 handler.setScore(1000);
             }
             // checking coin
-            if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 3
-                    || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 3){
+            if((collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT)) == 3){
+                handler.getWorld().editArray(tx,(y)/Obstacle.BLOCKHEIGHT ,0);
+                handler.setScore(200);
+            }
+            if((collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT))) == 3){
                 handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
                 handler.setScore(200);
-
             }
             //checking superstar
             if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 5
@@ -180,8 +178,31 @@ public class Character extends Object{
                 handler.setScore(1000);
             }
             // checking goomba
-            if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 6
-                    || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 6){
+            if(!jump) {
+                if (collisionwithTile(tx, (y) / Obstacle.BLOCKHEIGHT) == 6
+                        || collisionwithTile(tx, ((y + height) / Obstacle.BLOCKHEIGHT)) == 6) {
+
+                    if (character == 1) {
+                        if (collisionCount < 1) {
+                            handler.setLives(); //decrementing lives
+                        }
+                        collisionCount++;
+                        handler.getGame().startClock(1);
+                    } else if (character == 2) {
+                        handler.getGame().setMario(1, x, y);
+                        handler.getGame().startClock(1);
+                    } else if (character == 3) {
+                        handler.getWorld().editArray(tx, (y + height) / Obstacle.BLOCKHEIGHT, 0);
+                        handler.getGame().startClock(1);
+                    } else if (character == 4) {
+                        handler.getWorld().editArray(tx, (y + height) / Obstacle.BLOCKHEIGHT, 0);
+                        handler.getGame().startClock(1);
+                    }
+                }
+            }
+            // checking plant
+            if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 7
+                    || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 7){
 
                 if(character == 1){
                     if(collisionCount < 1) {
@@ -201,6 +222,89 @@ public class Character extends Object{
                     handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
                     handler.getGame().startClock(1);
                 }
+            }
+            if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 8
+                    || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 8) {
+               System.out.println("Next level");
+                handler.getGame().setLevel();
+            }
+        }
+        /************** LEFT CHECK ****************/
+        if(left){
+           // moveLeft();
+            futx = getFutX(x);
+            int tx = (int)(futx+ handler.getGameCamera().getxOffset()) / Obstacle.BLOCKWIDTH;
+            if((collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 0
+                    && collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 0)||
+                    (collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) > 2
+                            || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) > 2) ){
+                dx =(int)(dxa-= 1);
+                if (dx < leftSpeed){
+                    dx = leftSpeed;
+                }
+                if (x <= 0){
+                    dx =0;
+                }
+                x +=dx;
+                dx = 0;
+            }
+            // checking supermushroom
+            if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 4
+                    || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 4){
+                if(character ==1){
+                    handler.getGame().setMario(2,x,y);
+                }
+                if(character == 3){
+                    handler.getGame().setMario(4,x,y);
+                }
+                handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
+                handler.setScore(1000);
+            }
+            // checking coin
+            if((collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT)) == 3){
+                handler.getWorld().editArray(tx,(y)/Obstacle.BLOCKHEIGHT ,0);
+                handler.setScore(200);
+            }
+            if((collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT))) == 3){
+                handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
+                handler.setScore(200);
+            }
+            //checking superman
+            if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 5
+                    || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 5){
+                handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
+                if(character == 1){
+                    handler.getGame().setMario(3,x,y);
+                    handler.getGame().startClock(1);
+                }
+                else if (character == 2){
+                    handler.getGame().setMario(4,x,y);
+                    handler.getGame().startClock(1);
+                }
+                handler.setScore(1000);
+            }
+            // checking goomba
+            if(!jump){
+            if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 6
+                    || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 6) {
+
+                if (character == 1) {
+                    if (collisionCount < 1) {
+                        handler.setLives(); //decrementing lives
+                    }
+                    collisionCount++;
+                    handler.getGame().startClock(1);
+                } else if (character == 2) {
+                    handler.getGame().setMario(1, x, y);
+                    handler.getGame().startClock(1);
+                } else if (character == 3) {
+                    handler.getWorld().editArray(tx, (y + height) / Obstacle.BLOCKHEIGHT, 0);
+                    handler.getGame().startClock(1);
+                } else if (character == 4) {
+                    handler.getWorld().editArray(tx, (y + height) / Obstacle.BLOCKHEIGHT, 0);
+                    handler.getGame().startClock(1);
+                }
+            }
             }
             // checking plant
             if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 7
@@ -229,119 +333,33 @@ public class Character extends Object{
                     || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 8) {
                 //game.setLevel(holder);
             }
-            }
-        /************** LEFT CHECK ****************/
-        if(left){
-           // moveLeft();
-            futx = getFutX(x);
-            int tx = (int)(futx+ handler.getGameCamera().getxOffset()) / Obstacle.BLOCKWIDTH;
-            if((collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 0
-                    && collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 0)||
-                    (collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) > 2
-                            || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) > 2) ){
-                dx =(int)(dxa-= 1);
-                if (dx < leftSpeed){
-                    dx = leftSpeed;
-                }
-                if (x <= 0){
-                    dx =0;
-                }
-                x +=dx;
-                dx = 0;
-            }
-            if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 4
-                    || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 4){
-                if(character ==1){
-                    handler.getGame().setMario(2,x,y);}
-                handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
-                handler.setScore(1000);
-            }
-            if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 3
-                    || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 3){
-                handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
-                handler.setScore(200);
-            }
-            if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 5
-                    || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 5){
-                handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
-                if(character == 1){
-                    handler.getGame().setMario(3,x,y);
-                    handler.getGame().startClock(1);
-                }
-                else if (character == 2){
-                    handler.getGame().setMario(4,x,y);
-                    handler.getGame().startClock(1);
-                }
-                handler.setScore(1000);
-            }
-            //goomba
-            if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 6
-                    || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 6){
-
-                if(character == 1){
-                    if(collisionCount < 1) {
-                        handler.setLives();
-                    }collisionCount++;
-                    handler.getGame().startClock(1);
-                }
-                else if (character == 2){
-                    handler.getGame().setMario(1,x,y);
-                    handler.getGame().startClock(1);
-                }
-                else if (character == 3) {
-                    handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
-                    handler.getGame().startClock(1);
-                }
-                else if (character == 4) {
-                    handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
-                    handler.getGame().startClock(1);
-                }
-            }
-                //plant
-            if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 7
-                    || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 7){
-
-                if(character == 1){
-                    if(collisionCount < 1) {
-                        handler.setLives(); //decrementing lives
-                    }collisionCount++;
-                    handler.getGame().startClock(1);
-                }
-                else if (character == 2){
-                    handler.getGame().setMario(1,x,y);
-                    handler.getGame().startClock(1);
-                }
-                else if (character == 3) {
-                    handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
-                    handler.getGame().startClock(1);
-                }
-                else if (character == 4) {
-                    handler.getWorld().editArray(tx,(y+height)/Obstacle.BLOCKHEIGHT ,0);
-                    handler.getGame().startClock(1);
-                }
-            }
         }
         /************* JUMP CHECK **************/
         if(jump) {
             t+=.1;
             futy = getFutY(y);
-            //if (t > 0 && t < 1.6) {
+            //if(t > 0 && t< 1.7) {
                 int ty1 = y / Obstacle.BLOCKHEIGHT;
-                if ((collisionwithTile((x + 3 +(int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1)> 2
-                        || collisionwithTile((x + (width-3) + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty1)>2) ||
-                        (collisionwithTile((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1)== 0
-                        && collisionwithTile((x + (width-3) + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty1)==0)) {
+                if ((collisionwithTile((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1) > 2
+                        || collisionwithTile((x + (width - 3) + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty1) > 2) ||
+                        (collisionwithTile((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1) == 0
+                                && collisionwithTile((x + (width - 3) + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty1) == 0)) {
                     dy = (int) ((upSpeed * t) + (0.5 * gravity * t * t));
                     y -= dy;
                     dy = 0;
+                    if (collisionwithTile((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1) == 3) {
+                        handler.getWorld().editArray((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1, 0);
+                        handler.setScore(200);
+                    } else if (collisionwithTile((x + (width - 3) + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty1) == 3) {
+                        handler.getWorld().editArray((x + (width - 3) + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1, 0);
+                        handler.setScore(200);
+                    }
                 } else {
                     t = 0;
-                    //y = ty1 * Obstacle.BLOCKHEIGHT + Obstacle.BLOCKHEIGHT;
                     jump = false;
-                    down= true;
-                    //animation.setFrame(0);
+                    down = true;
                     animation.setJump(false);
-                    if(character == 2 || character == 4) {
+                    if (character == 2 || character == 4) {
                         if (collisionwithTile((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1) == 2) {
                             handler.getWorld().editArray((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty1, 0);
                             handler.setScore(10);
@@ -352,29 +370,113 @@ public class Character extends Object{
                     }
                 }
             //}
-            //else if (t > 1.6 && t <8 ) {
-                int ty2 = (futy + height) / Obstacle.BLOCKHEIGHT;
-            if ((collisionwithTile((x + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty2)> 2
-                    || collisionwithTile((x + width + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty2)>2) ||
-                    collisionwithTile((x + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty2)== 0
-                            && collisionwithTile((x + width + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty2)==0) {
+            //else if(t> 1.7 && t < 8) {
+                int ty = (futy + height) / Obstacle.BLOCKHEIGHT;
+                if ((collisionwithTile((x + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty) > 2
+                        || collisionwithTile((x + width + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty) > 2) ||
+                        collisionwithTile((x + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty) == 0
+                                && collisionwithTile((x + width + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty) == 0) {
 
                     dy = (int) ((upSpeed * t) + (0.5 * gravity * t * t));
                     y -= dy;
                     dy = 0;
-                }
-                else {
-                if (ty2 >= 10) {
-                    y = ty2 * Obstacle.BLOCKHEIGHT - height - 1;
-                }
-
-                    t =0;
+                    //supermushroom
+                    if (collisionwithTile((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty) == 4) {
+                        if (character == 1) {
+                            handler.getGame().setMario(2, x, y);
+                        }
+                        if (character == 3) {
+                            handler.getGame().setMario(4, x, y);
+                        }
+                        handler.getWorld().editArray((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty, 0);
+                        handler.setScore(1000);
+                    } else if (collisionwithTile((x + (width - 3) + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty) == 4) {
+                        if (character == 1) {
+                            handler.getGame().setMario(2, x, y);
+                        }
+                        if (character == 3) {
+                            handler.getGame().setMario(4, x, y);
+                        }
+                        handler.getWorld().editArray((x + (width - 3) + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty, 0);
+                        handler.setScore(1000);
+                    }
+                    //starman
+                    if (collisionwithTile((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty) == 5) {
+                        if (character == 1) {
+                            handler.getGame().setMario(3, x, y);
+                            handler.getGame().startClock(1);
+                        } else if (character == 2) {
+                            handler.getGame().setMario(4, x, y);
+                            handler.getGame().startClock(1);
+                        }
+                        handler.getWorld().editArray((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty, 0);
+                        handler.setScore(1000);
+                    } else if (collisionwithTile((x + (width - 3) + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty) == 5) {
+                        if (character == 1) {
+                            handler.getGame().setMario(3, x, y);
+                            handler.getGame().startClock(1);
+                        } else if (character == 2) {
+                            handler.getGame().setMario(4, x, y);
+                            handler.getGame().startClock(1);
+                        }
+                        handler.getWorld().editArray((x + (width - 3) + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty, 0);
+                        handler.setScore(1000);
+                    }
+                    //goomba
+                    if (t > 1.6){
+                        if (collisionwithTile((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty) == 6) {
+                            handler.getWorld().editArray((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty, 0);
+                        } else if (collisionwithTile((x + (width - 3) + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty) == 6) {
+                            handler.getWorld().editArray((x + (width - 3) + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty, 0);
+                        }
+                    }
+                    //plant
+                    if (collisionwithTile((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty) == 7) {
+                        if (character == 1) {
+                            if (collisionCount < 1) {
+                                handler.setLives(); //decrementing lives
+                            }
+                            collisionCount++;
+                            handler.getGame().startClock(1);
+                        } else if (character == 2) {
+                            handler.getGame().setMario(1, x, y);
+                            handler.getGame().startClock(1);
+                        } else if (character == 3) {
+                            handler.getWorld().editArray((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty, 0);
+                            handler.getGame().startClock(1);
+                        } else if (character == 4) {
+                            handler.getWorld().editArray((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty, 0);
+                            handler.getGame().startClock(1);
+                        }
+                    } else if (collisionwithTile((x + (width - 3) + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty) == 7) {
+                        if (character == 1) {
+                            if (collisionCount < 1) {
+                                handler.setLives(); //decrementing lives
+                            }
+                            collisionCount++;
+                            handler.getGame().startClock(1);
+                        } else if (character == 2) {
+                            handler.getGame().setMario(1, x, y);
+                            handler.getGame().startClock(1);
+                        } else if (character == 3) {
+                            handler.getWorld().editArray((x + (width - 3) + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty, 0);
+                            handler.getGame().startClock(1);
+                        } else if (character == 4) {
+                            handler.getWorld().editArray((x + (width - 3) + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty, 0);
+                            handler.getGame().startClock(1);
+                        }
+                    }
+                } else {
+                    if (ty >= 10) {
+                        y = ty * Obstacle.BLOCKHEIGHT - height - 1;
+                    }
+                    t = 0;
                     animation.setFrame(0);
                     animation.setJump(false);
                     down = false;
-                    jump =false;
+                    jump = false;
                 }
-            //}
+           // }
             if ( t > 8){
                 t = 0;
                 jump = false;
@@ -394,38 +496,13 @@ public class Character extends Object{
                 t += 0.2;
                 y -= dy;
                 dy = 0;
+                if (collisionwithTile((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty) == 6) {
+                    handler.getWorld().editArray((x + 3 + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty, 0);
+                } else if (collisionwithTile((x + (width - 3) + (int) (handler.getGameCamera().getxOffset() - 1)) / Obstacle.BLOCKWIDTH, ty) == 6) {
+                    handler.getWorld().editArray((x + (width - 3) + (int) (handler.getGameCamera().getxOffset())) / Obstacle.BLOCKWIDTH, ty, 0);
+                }
             }
             else{
-                /*******************/
-                /*
-                if(collisionwithTile(x,(ty)/Obstacle.BLOCKHEIGHT) == 4
-                        || collisionwithTile(x,((ty + height )/Obstacle.BLOCKHEIGHT)) == 4){
-                    if(character ==1){
-                        handler.getGame().setMario(2,x,y);}
-                    handler.getWorld().editArray(x,(ty+height)/Obstacle.BLOCKHEIGHT ,0);
-                    handler.setScore(1000);
-                }
-                if(collisionwithTile(x,(ty)/Obstacle.BLOCKHEIGHT) == 3
-                        || collisionwithTile(x,((ty + height )/Obstacle.BLOCKHEIGHT)) == 3){
-                    handler.getWorld().editArray(x,(ty+height)/Obstacle.BLOCKHEIGHT ,0);
-                    handler.setScore(200);
-                }
-                if(collisionwithTile(x,(ty)/Obstacle.BLOCKHEIGHT) == 5
-                        || collisionwithTile(x,((ty + height )/Obstacle.BLOCKHEIGHT)) == 5){
-                    handler.getWorld().editArray(x,(ty+height)/Obstacle.BLOCKHEIGHT ,0);
-                    if(character == 1){
-                        handler.getGame().setMario(3,x,y);
-                        handler.getGame().startClock(1);
-                    }
-                    else if (character == 2){
-                        handler.getGame().setMario(4,x,y);
-                        handler.getGame().startClock(1);
-                    }
-                    handler.setScore(1000);
-                }
-
-                */
-/*******************/
                 if (ty >= 10) {
                     y = ty * Obstacle.BLOCKHEIGHT - height - 1;
                 }
@@ -437,11 +514,8 @@ public class Character extends Object{
                 //animation.setFrame(0);
                 //animation.setJump(false);
             }
-
         }
-        /******************/
         if(collisionCount >= 35){   collisionCount = 0; }
-        /******************/
     }
 
     /***************************************************************************/
@@ -471,10 +545,10 @@ public class Character extends Object{
         int tmp = num;
         int tmpx =0;
         if(right){
-            tmpx = tmpx += 1;
+            tmpx += 1;
         }
         if(left){
-            tmpx =tmpx-= 1;
+            tmpx -= 1;
         }
         tmp += tmpx;
         return tmp;
@@ -490,38 +564,11 @@ public class Character extends Object{
         return tmp;
     }
 
-    /************* ABDUL *************/
     public int xStart(){
         return (int) (cam.getxOffset()/Obstacle.BLOCKWIDTH);
     }
     public int getCharacter(){
         return character;
     }
-    /*public void startClock(int time){
-        deltatime = 0;
-        if(time == 1) {
-            starttime = System.currentTimeMillis();
-            endtime = 0;
-            deltatime = 0;
-        }
-        else{
-            endtime = System.currentTimeMillis();
-            deltatime = endtime - starttime;
-        }
-        deltatime = endtime - starttime;
-        System.out.println(deltatime/1000);
-            starMario();
-    }
-
-    public void starMario() {
-        if (deltatime / 1000 >= 10) {
-            if (character == 3) {
-                handler.getGame().setMario(1, x, y);
-            } else if (character == 4) {
-                handler.getGame().setMario(2, x, y);
-
-            }
-        }
-    }*/
 
 }

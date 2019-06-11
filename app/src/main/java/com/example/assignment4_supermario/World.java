@@ -12,7 +12,7 @@ public class World {
     private int z;
 
 
-    public World(Bitmap world, Handler handler, int level) {
+    public World(Handler handler, int level) {
         //this.handler = handler;
         this.handler = handler;
         loadWorld(level);
@@ -21,9 +21,6 @@ public class World {
 
     public void update() {
 
-        if(game.level == 2){
-
-        }
     }
 
     public void draw(Canvas canvas) {
@@ -94,22 +91,23 @@ public class World {
                 block[x][y] = 1;
             }
         }
-       block[100][1] = 8; //flag
+       block[100][8] = 8; //flag
 
         if(level == 1) {
-            block[6][9] = 5;
+            //block[6][9] = 5;
             block[15][9] = block[16][9] = 0; //empty
             //coin
             block[9][9] = block[14][6] = block[18][6] = block[40][7] = block[50][8] = 3; //coin
             block[34][6] = block[37][6] = block[35][6] = block[42][7] = block[60][8] = 3;
-            block[60][7] = block[62][8] = block[64][6] = block[72][6] = block[78][6] = 3;
+            block[60][7] = block[62][8] = block[64][6] = block[72][6] = block[78][6] =block[40][4] = 3;
             //mushroom
-            block[17][9] = block[4][9] = block[40][8] = 4;
+            block[17][9] = block[4][9] = block[40][9] = block[28][9]= 4;
             //bricks
-            block[26][7] = block[27][7] = block[70][8]= block[40][9] = block[60][7] = 2;
+            block[26][5] = block[27][5] = block[70][5]= block[40][5] = block[60][5] = 2;
             //goomba
-            block[10][9] =  block[17][9] = block[40][9] = block[63][9] = 6;
-            block[13][9] = block[4][9] = block[70][9] = 7;
+            block[10][9] =  block[17][9]  = block[63][9] = 6;
+            //plant
+            block[13][9] = block[70][9] = 7;
         }
         else if(level == 2) {
             block[4][9] = 4;
