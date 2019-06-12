@@ -515,7 +515,7 @@ public class Character extends Object{
                 //animation.setJump(false);
             }
         }
-        if(collisionCount >= 35){   collisionCount = 0; }
+        if(collisionCount >= 32){   collisionCount = 0; }
     }
 
     /***************************************************************************/

@@ -17,8 +17,6 @@ import android.view.SurfaceView;
 
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
-    private GameOverActivity gameOver;
-    private SuperMario activity = new SuperMario();
     private boolean right, left, jump;
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1080;
@@ -30,9 +28,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     boolean start = true;
     private long starttime,endtime,deltatime;
 
-    private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-    private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-    public int x, y, count;
+    public int count;
 
     public long score = 0;
     public int lives = 3;
@@ -45,13 +41,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private CreateBitmaps brick,floor, coin, supermushroom, starman, goomba,plant,flag;
     private Character mario, smallmario,bigmario,bstarmario, starmario;
     private World world1,world2,world3;
-    private SurfaceHolder holder;
+    public SurfaceHolder holder;
 
     //Camera
     private GameCamera gameCamera;
 
     //Handler
     private Handler handler;
+
+    //Canvas
+
 
 
 
@@ -144,10 +143,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 back.update();
                 getGameCamera().move(5);
             }
-            if(lives <= 0){
-                lives = 0;
-              //  surfaceDestroyed(getHolder());
-            }
+        }
+        if(lives <= 0){
+            lives = 0;
         }
     }
 
@@ -156,6 +154,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         if(canvas != null){
           back.draw(canvas);
+
           if(level == 1) {
               world1.draw(canvas);
           }
@@ -166,7 +165,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
               world3.draw(canvas);
           }
           if(level == 4){
-              displayGameOver(canvas);
+              displayWin(canvas);
+              level = 0;
+              thread.setRunning(false); //stops thread
           }
           mario.draw(canvas);
           displayScore(canvas);
@@ -411,16 +412,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         paint.setTextSize(60);
         canvas.drawText("LIVES " + lives, 120, 70, paint);
 
-
-        /**********************************************************/
         if(lives <= 0){
             lives = 0;
             displayGameOver(canvas);
-            Intent startIntent = new Intent(gameOver.getApplicationContext(),GameOverActivity.class);
-            //how to pass info to second screen
-            gameOver.startActivity(startIntent);
+            thread.setRunning(false);   //stop thread
         }
-        /***********************************************************/
+
     }
     public void startClock(int time){
         deltatime = 0;
@@ -459,13 +456,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void displayGameOver(Canvas canvas){
-            canvas.drawARGB(255, 0, 0, 0);
-            Paint paint2 = new Paint();
-           paint2.setColor(Color.BLACK);
-            paint2.setTextSize(140);
-           canvas.drawText("Game Over!", 500, 300, paint2);
-            paint2.setTextSize(100);
-            canvas.drawText("Score "+score, 500, 800, paint2);
-            score = 0;
+            Paint paint = new Paint();
+           paint.setColor(Color.BLACK);
+            paint.setTextSize(140);
+           canvas.drawText("Game Over!", 500, 300, paint);
+            paint.setTextSize(100);
+            canvas.drawText("Score "+score, 500, 800, paint);
         }
+    public void displayWin(Canvas canvas){
+        canvas.drawARGB(255, 0, 0, 0);
+        Paint paint2 = new Paint();
+        paint2.setColor(Color.WHITE);
+        paint2.setTextSize(140);
+        canvas.drawText("Good Job!", 500, 300, paint2);
+        paint2.setTextSize(100);
+        canvas.drawText("Score "+score, 500, 800, paint2);
+    }
 }

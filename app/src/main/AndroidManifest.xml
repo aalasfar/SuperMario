@@ -9,7 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GameOverActivity"></activity>
         <activity
             android:name=".SuperMario"
             android:screenOrientation="landscape" />
