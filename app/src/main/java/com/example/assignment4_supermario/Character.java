@@ -226,7 +226,7 @@ public class Character extends Object{
             if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 8
                     || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 8) {
                System.out.println("Next level");
-                handler.getGame().setLevel();
+                handler.getGame().setLevel(character);
             }
         }
         /************** LEFT CHECK ****************/
@@ -331,7 +331,7 @@ public class Character extends Object{
             }
             if(collisionwithTile(tx,(y)/Obstacle.BLOCKHEIGHT) == 8
                     || collisionwithTile(tx,((y + height )/Obstacle.BLOCKHEIGHT)) == 8) {
-                //game.setLevel(holder);
+                handler.getGame().setLevel(character);
             }
         }
         /************* JUMP CHECK **************/

@@ -36,7 +36,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public long score = 0;
     public int lives = 3;
-    public static int level = 1;
+    public static int level = 0;
 
     //Objects
     private MainThread thread;
@@ -61,11 +61,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         thread = new MainThread(getHolder(),this);
         setFocusable(true);
     }
-    public void setLevel(){
+    public void setLevel(int type){
         level++;
         if(level == 1){
             handler.setWorld(world1);
-            setMario(1, 100, 680);
+            setMario(type, 100, 680);
             back = new Background(setLevelMap(level));
             back.setVector(-5);
             gameCamera = new GameCamera(0); //initialize its lcoation
@@ -73,7 +73,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         if(level == 2){
             handler.setWorld(world2);
-            setMario(1, 100, 680);
+            setMario(type, 100, 680);
             back = new Background(setLevelMap(level));
             back.setVector(-5);
             gameCamera = new GameCamera(0); //initialize its lcoation
@@ -81,7 +81,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         if(level == 3){
             handler.setWorld(world3);
-            setMario(1, 100, 680);
+            setMario(type, 100, 680);
             back = new Background(setLevelMap(level));
             back.setVector(-5);
             gameCamera = new GameCamera(0); //initialize its lcoation
@@ -102,10 +102,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         world1 = new World(handler, 1);
         world2 = new World(handler, 2);
         world3 = new World(handler, 3);
-        handler.setWorld(world1);
-        back = new Background(setLevelMap(level));
-        back.setVector(-5);
-        setMario(1, 100, 680);
+        setLevel(1);
         setBitmaps();
         // GameCamera and Handler
         gameCamera = new GameCamera(0); //initialize its lcoation
@@ -394,6 +391,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         goomba = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.goomba),6);
         plant = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.plant),7);
         flag = new CreateBitmaps(BitmapFactory.decodeResource(getResources(),R.drawable.flag),8);
+
     }
     /********************************************/
     public GameCamera getGameCamera(){
@@ -440,7 +438,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void starMario() {
-        if (deltatime / 1000 >= 15) {
+        if (deltatime / 1000 >= 10) {
             if (mario.getCharacter() == 3) {
                 setMario(1, mario.x, mario.y);
             } else if (mario.getCharacter() == 4) {

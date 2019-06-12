@@ -112,7 +112,7 @@ public class World {
         else if(level == 2) {
             block[4][9] = 4;
             block[24][5] = 2;
-            block[25][7] = 2;
+            block[25][5] = 2;
             block[6][9] = 5;
             block[15][9] = block[16][9] = 0; //empty
             //coin
@@ -120,12 +120,12 @@ public class World {
             block[34][6] = block[37][6] = block[35][6] = block[42][7] = block[60][8] = 3;
             block[60][7] = block[62][8] = block[64][6] = block[72][6] = block[78][6] = 3;
             //mushroom
-            block[17][9] = block[4][9] = block[40][8] = 4;
+            block[17][9] = block[4][9]  = 4;
             //bricks
-            block[26][7] = block[27][7] = block[70][8]= block[40][9] = block[60][7] = 2;
+            block[26][5] = block[27][5] = block[70][5]= block[40][5] = block[60][5] = 2;
             //goomba
-            block[10][9] =  block[17][9] = block[40][9] = block[63][9] = 6;
-            block[13][9] = block[4][9] = block[70][9] = 7;
+            block[10][9]  = block[40][9] = block[63][9] = 6;
+            block[13][9]  = 7;
         }
 
         else if(level == 3){
@@ -138,12 +138,12 @@ public class World {
             block[34][6] = block[37][6] = block[35][6] = block[42][7] = block[60][8] = 3;
             block[60][7] = block[62][8] = block[64][6] = block[72][6] = block[78][6] = 3;
             //mushroom
-            block[17][9] = block[4][9] = block[40][8] = 4;
+            block[17][9] = block[4][9]  = 4;
             //bricks
-            block[26][7] = block[27][7] = block[70][8]= block[40][9] = block[60][7] = 2;
+            block[26][5] = block[27][5] = block[70][5]= block[40][5] = block[60][5] = 2;
             //goomba
-            block[10][9] =  block[17][9] = block[40][9] = block[63][9] = 6;
-            block[13][9] = block[4][9] = block[70][9] = 7;
+            block[10][9]  = block[40][9] = block[63][9] = 6;
+            block[13][9]  = block[70][9] = 7;
 
         }
     }
@@ -152,27 +152,4 @@ public class World {
         block[x][y] = type;
     }
 
-    /************************ ABDUL **********************/
-    public int[][] getArray() {
-        return block;
-    }
-
-
-    public void shiftArray() {
-        int xShift = (int) (handler.getGameCamera().getxOffset());
-        //xShift = xShift/ (int) (game.getGameCamera().getxOffset());
-        xX++;
-       // System.out.println(xX);
-        System.out.println((int)(handler.getGameCamera().getxOffset()) % Obstacle.BLOCKWIDTH);
-
-        if(handler.getGameCamera().getxOffset() % Obstacle.BLOCKWIDTH == 0){
-        //if (xShift / Obstacle.BLOCKWIDTH > 0) {
-        xX = Obstacle.BLOCKWIDTH;
-            for (int i = 0; i < width - 1; i++) {
-                for (int j = 0; j < height; j++) {
-                    block[i][j] = block[i+ 1][j];
-                }
-            }
-        }
-    }
 }
