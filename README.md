@@ -7,12 +7,13 @@ Team Name:
 * **Abdullah Alasfar**
   - 90455968
 * **Nathaniel Aponte**
-  - UCInetID
+  - UCInetID: Aponten
+  - UCI Student ID: 41858361
 
 ## Testing Specifications
 Name your specifications here:
 * What emulator shoule graders use? Example) Pixel 2
-* Should graders use an Android phone?
+* Should graders use an Android phone? :Recomended to use andriod phone for easier testing
 * Any other requirements?
 
 ## Functionalities
@@ -45,3 +46,8 @@ The following **required** functionality is complete:
 [//]: # (* [ ] Got any features?)
 The following **additional** features are implemented:<br/>
 We added arrows.
+
+## Addtional 
+* When lost all of lives you must quit app and restart it.
+* Some bugs with changing forms of mario usally jumping to the left fixes it
+* Some bugs when colliding with objects
