@@ -51,3 +51,4 @@ We added arrows.
 * When lost all of lives you must quit app and restart it.
 * Some bugs with changing forms of mario usally jumping to the left fixes it
 * Some bugs when colliding with objects
+"# SuperMario" 
